@@ -1,0 +1,1129 @@
+<div class="row">
+
+  <!-- Trigger the modal with a button -->
+  <button ng-if="myAccessType.can_edit_access_passes" data-backdrop="false" type="button"
+    class="btn btn-primary btn-md btnAddLocation" ng-click="resetForm()" data-toggle="modal"
+    data-target="#myModal">Create New Access Pass</button>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+
+
+
+
+
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Generate Access Pass</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+              <!-- <div class="form-group">
+                  <label>Add Access Type</label>
+                  <select class="custom-select">
+                    <option>Owner</option>
+                    <option>Resident</option>
+                    <option>Guest</option>
+                    <option>Contractor</option>
+                    <option>Syndic</option>
+                    <option>Employee</option>
+                  </select>
+                </div> -->
+
+              <!-- <div class="form-group">
+                  <label>Select user</label>
+                  <select class="custom-select">
+                    <option ng-repeat="us in users">{{us.name}}</option>
+                  </select>
+                </div> -->
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input ng-model="name" type="text" class="form-control" id="name" placeholder="Enter name">
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input ng-model="phone" type="text" class="form-control" id="phone" placeholder="Enter phone">
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input ng-model="email" type="email" class="form-control" id="email" placeholder="Enter email">
+              </div>
+
+              <div class="form-group">
+                <label for="company">Company</label>
+                <input ng-model="company" type="text" class="form-control" id="company" placeholder="Enter company">
+              </div>
+
+              <div class="form-group">
+                <label for="comment">Comment</label>
+                <input ng-model="comment" type="text" class="form-control" id="comment" placeholder="Enter comment">
+              </div>
+
+              <div class="form-group">
+                <label>Select user type</label>
+                <select class="custom-select" ng-model="user_type">
+                  <option value="{{res.url}}" ng-repeat="res in visitortypes">{{res.visitor_type}}</option>
+                </select>
+              </div>
+              <div ng-show="isPermanent">
+                <label>Upload Image</label>
+
+                <div class="form-group row">
+                  <label class="upload-img-btn">
+                    <img class="placeholder-img" src="dist/img/profile-placeholder.png">
+                    <input class="actual-img form-control" onchange="angular.element(this).scope().SelectFile(event)"
+                      type="file">
+                  </label>
+                </div>
+              </div>
+              <div ng-show="!isPermanent">
+                <label>Validity</label>
+
+                <div class="form-group row">
+                  <input ng-model="dateFrom" class="form-control col-md-6" placeholder="Date from"
+                    moment-picker="stringDateFrom" locale="fr" is_utc=true format="YYYY-MM-DD HH:mm" start-view="month"
+                    min-date="minDateMoment" ng-model-options="{ updateOn: 'blur' }">
+                  <input ng-model="dateTo" class="form-control col-md-6" placeholder="Date to"
+                    moment-picker="stringDateTo" locale="fr" is_utc=true format="YYYY-MM-DD HH:mm" start-view="month"
+                    min-date="dateFrom" ng-model-options="{ updateOn: 'blur' }">
+                </div>
+              </div>
+
+              <!--  <div class="form-group">-->
+              <!--    <label for="vd">Validity description</label>-->
+              <!--    <input ng-model="validity_description" type="text" class="form-control" id="vd" placeholder="Enter validity description">-->
+              <!--</div>-->
+
+
+              <div class="form-group">
+                <label for="tags">Vehicle number/s</label>
+                <tags-input id="tags" ng-model="vehicle_number">
+                </tags-input>
+              </div>
+
+              <div class="form-group">
+                <label for="guests">Number of guests</label>
+                <input ng-model="no_of_guests" type="text" class="form-control" id="guests"
+                  placeholder="Enter number of guests">
+              </div>
+
+
+              <div class="form-group">
+                <label>Select Location</label>
+                <select class="custom-select" ng-change="selectAreasByResidence(searchresidence)"
+                  ng-model="searchresidence">
+                  <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Select Location area</label>
+                <select class="custom-select" ng-model="resident_area">
+                  <option ng-repeat="ar in areas" value="{{ar.url}}">{{ar.area_name}}</option>
+                </select>
+              </div>
+
+
+              <!-- <div class="form-group">
+          <label>Select access area</label>
+          <select class="custom-select" ng-model="resident_area">
+            <option value="{{res.area.url}}" ng-repeat="res in accountareas">{{res.area.area_name}}</option>
+          </select>
+        </div> -->
+
+              <!--<div class="form-group">-->
+              <!--  <label>Select resident</label>-->
+              <!--  <select class="custom-select" ng-model="resident">-->
+              <!--    <option ng-if="res.user.residence_area == resident_area" value="{{res.user.url}}" ng-repeat="res in residentsareas">{{res.user.name}}</option>-->
+              <!--  </select>-->
+              <!--</div>-->
+
+
+
+              <!--<div ng-if="createdPass">-->
+              <!--          <h3 style="text-align: center"> Residence area name <span class="float-right badge">{{createdPass.residence.area_name}}</span></h3>-->
+              <!--<h3 style="text-align: center">{{activeConnection.connection.name}}</h3>-->
+              <!--  <img width="100%" class="img-circle elevation-2" src="{{createdPass.qr_code}}">-->
+              <!--<h4 style="text-align: center">{{activeConnection.connection.code}}</h4>-->
+              <!--  <ul class="nav flex-column">-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Visitor Name: <span class="float-right badge">{{createdPass.connection.name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Interval: <span class="float-right badge">From: {{createdPass.connection.timedatefrom | date :  "dd.MM.y HH:mm"}} - To: {{createdPass.connection.timedateto | date :  "dd.MM.y HH:mm"}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Vehicle/s: <span class="float-right badge">{{createdPass.connection.vehicle_number}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber name: <span class="float-right badge">{{createdPass.resident.name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Comment: <span class="float-right badge">{{createdPass.connection.comment}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+
+
+              <!--  </ul>-->
+
+
+              <!--  <ul class="nav flex-column">-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Name <span class="float-right badge">{{createdPass.name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Email <span class="float-right badge">{{createdPass.email}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Phone <span class="float-right badge">{{createdPass.phone}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Company <span class="float-right badge">{{createdPass.company}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Comment <span class="float-right badge">{{createdPass.comment}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Code <span class="float-right badge">{{createdPass.code}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Number of guests <span class="float-right badge">{{createdPass.number_of_guests}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Registered date <span class="float-right badge">{{createdPass.registered_date | date :  "dd.MM.y HH:mm"}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Interval <span class="float-right badge">{{createdPass.timedatefrom | date :  "dd.MM.y HH:mm"}} - {{activeConnection.timedateto | date :  "dd.MM.y HH:mm"}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--<li class="nav-item">-->
+              <!--  <a class="nav-link">-->
+              <!--    Validity description <span class="float-right badge">{{createdPass.connection.validity_description}}</span>-->
+              <!--  </a>-->
+              <!--</li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Vehicle/s <span class="float-right badge">{{createdPass.vehicle_number}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Residence area name <span class="float-right badge">{{createdPass.visitor_area.area_name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li class="nav-item">-->
+              <!--      <a class="nav-link">-->
+
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li ng-if="createdPass.visitor_resident != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber name <span class="float-right badge">{{createdPass.visitor_resident.name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li ng-if="createdPass.visitor_user != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber name <span class="float-right badge">{{createdPass.visitor_user.name}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+              <!--    <li ng-if="createdPass.visitor_resident != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber email <span class="float-right badge">{{createdPass.visitor_resident.email}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li ng-if="createdPass.visitor_user != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber email <span class="float-right badge">{{createdPass.visitor_user.email}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+              <!--    <li ng-if="createdPass.visitor_resident != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber phone <span class="float-right badge">{{createdPass.visitor_resident.phone}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+              <!--    <li ng-if="createdPass.visitor_user != null" class="nav-item">-->
+              <!--      <a class="nav-link">-->
+              <!--        Subscriber phone <span class="float-right badge">{{createdPass.visitor_user.phone}}</span>-->
+              <!--      </a>-->
+              <!--    </li>-->
+
+
+
+              <!--  </ul>-->
+              <!--</div>-->
+            </div>
+
+
+            <div class="card-footer">
+              <button data-dismiss="modal" class="btn btn-default">Close</button>
+              <button type="submit" class="btn btn-primary" ng-click="savePass()">Generate Access Pass</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="col-md-12">
+  <div class="card card-secondary">
+    <div class="card-header">
+      <h3 class="card-title">Access Pass List</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Period</th>
+            <th>Guests</th>
+            <th>Type</th>
+            <th>Timestamps</th>
+            <th>Resident</th>
+            <th>Status</th>
+            <th>Actions</th>
+            <th>Active/Deactive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="isAdmin == true" ng-repeat="vi in connections | orderBy:'-connection.url'">
+            <td><span style="font-weight: 900; text-transform: uppercase;">{{vi.connection.name}}</span></td>
+            <td><img ng-if="vi.connection.timedatefrom"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABwElEQVQ4jYWRv09TcRTFP/fb11dNQQwDiQOpBURNtQ4UHBzcrK9hZnXWKPwNLs7+2NiMcWFrTNrSxdlYFkgbUysigyQlMQE0sa39Xgfa+vp81bPde88599zvVwggtVF1W+e6niBZLNMAIuxb0XLsOFKsrqTafr74i0ubO8tYngEzQeMePgm6WvfShX7DDMTFnVUs+X+IAWYVeTNf2n44lKC3Oe83/A+sqC7Xc+mipDaqbnvc1oDZIEsAxwgdq2Emn90Tc8V0xrq5MDFA+vxZ3t6+TO7CRNg42RrTrFEjd0bldI1hKubw9MY0r5aSzMRjgYg266Ak+vXLxYuMRyODeTzy50luTsbJ35rjRaPJ+u7hqV4lYYDQA8MggCNDDXUEvvQd7r3fGxIsTsZ5vZQE4N23HzyufaXxvTWYK7rvWNGyqDwI29i2lmbrF08+HFA4OPo7kZGSLFQq0ePDWA2YC408+ht33RNz1WxlMh1B1wAbZCiMEndVuV9dSbUNQN1LF0TCTUJgRWStkbte7qccYL6w7anI87BzepE+qsijhndt03/mEBYqlehR88xdxGZFJXGqkz2gPDH1s7SVyXT8/N8jqpvoQ6v3YgAAAABJRU5ErkJggg==" />
+              {{vi.connection.timedatefrom | date : "dd.MM.y HH:mm"}}<br>
+              <img ng-if="vi.connection.timedatefrom"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABv0lEQVQ4jY2Sv2tTcRTFP/ebl4RKsT9AaFI02HRQIjh0FcHFWFP8DxxcKg4muArKs4KrKLp0Kx2dFGlrtq5CJ0kXadJ0qHFJ6u/40nyvQ9LXx+tL8Gz3cu75nnPvVwih4uYS4/bvvGDzqpwFwLCHmvKBSa7n3IoX5EuwaLgzC9bqC5CZsHAfO2Ioptzq2gmB/UfZIqLPATNg+AhWVUvTT2uvfIHey7z9j2FfRJCF1NLOulTcXGLC/tkGsmGWxOKoPQTVKJFay4xcMBO0b0YNj1wqcObBJvHpy4NcnB+3v/MOVq8Hu7HJc4wVnpCcvdp3kRiSRPIOSuZolaNX7jJ6rYQ4SZ8ydusZ6v06Dt/+TnPldq9QMgbhOGDMIXTZoTCCOirUpS/xc/M17U/vOV1w/Qjf3j3Eq3+MFLCwZ1BTDjYPm3Waq3c4eFOk++Mr2vUihwFihg3Rxbl4Y6q1rTAbJgw/o1Zb5tRFI8tbHQylnqMQpdsZ9Ae6GO7l3IpnAFJudU1VI0UiYAUtpd1aGUIr//I4Ow/6MipOH5/B3k8v7X7wY56wvTgX359q3gDJo2QAjJFdq7acbkxuyPJWJ8j/B0bVqA0JmHvzAAAAAElFTkSuQmCC">
+              {{vi.connection.timedateto | date : "dd.MM.y HH:mm"}}
+            </td>
+            <td>{{vi.connection.number_of_guests}}</td>
+            <td>{{vi.connection.visitor_type.name}}</td>
+            <td><span style="font-weight: 900; text-transform: uppercase;">In:</span> {{vi.connection.checkin_date |
+              date : "dd.MM.y HH:mm"}}<br><span style="font-weight: 900; text-transform: uppercase;">Out:</span>
+              {{vi.connection.checkout_date | date : "dd.MM.y HH:mm"}}</td>
+            <td ng-if="vi.connection.visitor_resident != null">{{vi.connection.visitor_resident.name}}<br><a
+                href="tel:{{vi.connection.visitor_resident.phone}}"><img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC" />
+                {{vi.connection.visitor_resident.phone}}</a></td>
+            <td ng-if="vi.connection.visitor_user != null">{{vi.connection.visitor_user.name}}<br><a
+                href="tel:{{vi.connection.visitor_user.phone}}"><img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC" />
+                {{vi.connection.visitor_user.phone}}</a></td>
+            <td>{{vi.connection.visitor_status.name}}</td>
+
+            <td><span ng-click="setConnection(vi)" class="badge bg-info" data-toggle="modal"
+                data-target="#shareModal">share & print</span>
+              <span ng-click="setConnection(vi)" class="badge bg-success" data-toggle="modal"
+                data-target="#connectionModal">view</span>
+              <span ng-if="myAccessType.can_edit_access_passes" class="badge bg-primary"
+                ng-click="setCurrentAccessPass(vi)" data-toggle="modal" data-target="#editconnectionModal">edit</span>
+              <span ng-if="myAccessType.can_edit_access_passes" class="badge bg-warning"
+                ng-confirm-click="removeData(vi.connection.url)"
+                ng-confirm-message="You are about to remove the access pass.">remove</span>
+            </td>
+            <td>
+              <span ng-if="myAccessType.can_edit_access_passes">
+                <div class="btn-group status-btn" id="status" data-toggle="buttons">
+                  <label class="btn btn-default btn-on-3 btn-sm" ng-class="{{vi.connection.isEnable}} ? 'active' : ''">
+                    <input type="radio" ng-model="vi.connection.isEnable" value="true" name="{{vi.connection.url}}"
+                      ng-click="changestatus(vi)">Active</label>
+                  <label class="btn btn-default btn-off-3 btn-sm "
+                    ng-class="{{vi.connection.isEnable}} ? '' : 'active'">
+                    <input type="radio" ng-model="vi.connection.isEnable" value="false" name="{{vi.connection.url}}"
+                      ng-click="changestatus(vi)">Deactive</label>
+                </div>
+                <!-- <button type="button" class="btn btn-secondary btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
+                        <div class="handle"></div></button> -->
+                <!-- <button ng-if="con.status == 'APPROVED'" type="button" class="btn btn-block btn-danger btn-xs"
+                    ng-click="setConnectionStatus(con.url, 'reject', con.email, con.passcode, con.push_id, con)">Reject</button> -->
+                <!-- <button ng-if="con.status == 'PENDING'" type="button" class="btn btn-block btn-warning btn-xs" ng-click="setConnectionStatus(con.url, 'reject', con.email, con.passcode, con.push_id, con)">Reject</button>  -->
+              </span>
+            </td>
+
+          </tr>
+
+
+          <tr
+            ng-if="isAdmin == false && vi.connection.visitor_user != null && vi.connection.visitor_user.url == actualUser"
+            ng-repeat="vi in connections | orderBy:'-connection.timedatefrom'">
+            <td><span style="font-weight: 900; text-transform: uppercase;">{{vi.connection.name}}</span></td>
+            <td><img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABwElEQVQ4jYWRv09TcRTFP/fb11dNQQwDiQOpBURNtQ4UHBzcrK9hZnXWKPwNLs7+2NiMcWFrTNrSxdlYFkgbUysigyQlMQE0sa39Xgfa+vp81bPde88599zvVwggtVF1W+e6niBZLNMAIuxb0XLsOFKsrqTafr74i0ubO8tYngEzQeMePgm6WvfShX7DDMTFnVUs+X+IAWYVeTNf2n44lKC3Oe83/A+sqC7Xc+mipDaqbnvc1oDZIEsAxwgdq2Emn90Tc8V0xrq5MDFA+vxZ3t6+TO7CRNg42RrTrFEjd0bldI1hKubw9MY0r5aSzMRjgYg266Ak+vXLxYuMRyODeTzy50luTsbJ35rjRaPJ+u7hqV4lYYDQA8MggCNDDXUEvvQd7r3fGxIsTsZ5vZQE4N23HzyufaXxvTWYK7rvWNGyqDwI29i2lmbrF08+HFA4OPo7kZGSLFQq0ePDWA2YC408+ht33RNz1WxlMh1B1wAbZCiMEndVuV9dSbUNQN1LF0TCTUJgRWStkbte7qccYL6w7anI87BzepE+qsijhndt03/mEBYqlehR88xdxGZFJXGqkz2gPDH1s7SVyXT8/N8jqpvoQ6v3YgAAAABJRU5ErkJggg==" />
+              {{vi.connection.timedatefrom | date : "dd.MM.y HH:mm"}}<br>
+              <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABv0lEQVQ4jY2Sv2tTcRTFP/ebl4RKsT9AaFI02HRQIjh0FcHFWFP8DxxcKg4muArKs4KrKLp0Kx2dFGlrtq5CJ0kXadJ0qHFJ6u/40nyvQ9LXx+tL8Gz3cu75nnPvVwih4uYS4/bvvGDzqpwFwLCHmvKBSa7n3IoX5EuwaLgzC9bqC5CZsHAfO2Ioptzq2gmB/UfZIqLPATNg+AhWVUvTT2uvfIHey7z9j2FfRJCF1NLOulTcXGLC/tkGsmGWxOKoPQTVKJFay4xcMBO0b0YNj1wqcObBJvHpy4NcnB+3v/MOVq8Hu7HJc4wVnpCcvdp3kRiSRPIOSuZolaNX7jJ6rYQ4SZ8ydusZ6v06Dt/+TnPldq9QMgbhOGDMIXTZoTCCOirUpS/xc/M17U/vOV1w/Qjf3j3Eq3+MFLCwZ1BTDjYPm3Waq3c4eFOk++Mr2vUihwFihg3Rxbl4Y6q1rTAbJgw/o1Zb5tRFI8tbHQylnqMQpdsZ9Ae6GO7l3IpnAFJudU1VI0UiYAUtpd1aGUIr//I4Ow/6MipOH5/B3k8v7X7wY56wvTgX359q3gDJo2QAjJFdq7acbkxuyPJWJ8j/B0bVqA0JmHvzAAAAAElFTkSuQmCC">
+              {{vi.connection.timedateto | date : "dd.MM.y HH:mm"}}
+            </td>
+            <td>{{vi.connection.number_of_guests}}</td>
+            <td>{{vi.connection.visitor_type.name}}</td>
+            <td><span style="font-weight: 900; text-transform: uppercase;">In:</span> {{vi.connection.checkin_date |
+              date : "dd.MM.y HH:mm"}}<br><span style="font-weight: 900; text-transform: uppercase;">Out:</span>
+              {{vi.connection.checkout_date | date : "dd.MM.y HH:mm"}}</td>
+            <td ng-if="vi.connection.visitor_resident != null">{{vi.connection.visitor_resident.name}}<br><a
+                href="tel:{{vi.connection.visitor_resident.phone}}"><img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC" />
+                {{vi.connection.visitor_resident.phone}}</a></td>
+            <td ng-if="vi.connection.visitor_user != null">{{vi.connection.visitor_user.name}}<br><a
+                href="tel:{{vi.connection.visitor_user.phone}}"><img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC" />
+                {{vi.connection.visitor_user.phone}}</a></td>
+            <td>{{vi.connection.visitor_status.name}}</td>
+
+            <td><span ng-click="setConnection(vi)" class="badge bg-info" data-toggle="modal"
+                data-target="#shareModal">share & print</span>
+              <span ng-click="setConnection(vi)" class="badge bg-success" data-toggle="modal"
+                data-target="#connectionModal">view</span>
+              <span ng-if="myAccessType.can_edit_access_passes" class="badge bg-primary"
+                ng-click="setCurrentAccessPass(vi)" data-toggle="modal" data-target="#editconnectionModal">edit</span>
+              <span ng-if="myAccessType.can_edit_access_passes" class="badge bg-warning"
+                ng-confirm-click="removeData(vi.connection.url)"
+                ng-confirm-message="You are about to remove the access pass.">remove</span>
+            </td>
+            <td>
+              <span ng-if="myAccessType.can_edit_access_passes">
+                <div class="btn-group status-btn" id="status" data-toggle="buttons">
+                  <label class="btn btn-default btn-on-3 btn-sm" ng-class="{{vi.connection.isEnable}} ? 'active' : ''">
+                    <input type="radio" ng-model="vi.connection.isEnable" value="true" name="{{vi.connection.url}}"
+                      ng-click="changestatus(vi)">Active</label>
+                  <label class="btn btn-default btn-off-3 btn-sm "
+                    ng-class="{{vi.connection.isEnable}} ? '' : 'active'">
+                    <input type="radio" ng-model="vi.connection.isEnable" value="false" name="{{vi.connection.url}}"
+                      ng-click="changestatus(vi)">Deactive</label>
+                </div>
+                <!-- <button type="button" class="btn btn-secondary btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
+                          <div class="handle"></div></button> -->
+                <!-- <button ng-if="con.status == 'APPROVED'" type="button" class="btn btn-block btn-danger btn-xs"
+                      ng-click="setConnectionStatus(con.url, 'reject', con.email, con.passcode, con.push_id, con)">Reject</button> -->
+                <!-- <button ng-if="con.status == 'PENDING'" type="button" class="btn btn-block btn-warning btn-xs" ng-click="setConnectionStatus(con.url, 'reject', con.email, con.passcode, con.push_id, con)">Reject</button>  -->
+              </span>
+            </td>
+
+
+          </tr>
+
+
+
+        </tbody>
+      </table>
+      <!-- <a class="btn btn-block btn-default btn-xs" ng-click="loadMore()">More..</a> -->
+
+
+      <!-- <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Add Access Type</button>
+              </div> -->
+
+    </div>
+
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div id="connectionModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <div class="card card-widget widget-user-2">
+
+          <img src="{{activeConnection.connection.qr_code}}" width="220px" style="margin: 0 auto;">
+
+          <div class="socialSharing">
+
+            <!-- <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="facebook"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFEklEQVRoge2ZW2gcVRjH/2c22SQ1aZLNRXNraFATvKFs0QdfTPTFiKCIQUwFwZQYkqIY8cELrKLFF2+0G4yVgpBgm4q0oO2DJvpgVUICKohtUFuSzcZoLrK7uezOzPn7kLRddmZ2ZjJJfGg+WHZ2zjnf/P7nfOc7c84CO7Zj17aJTfEyRF/TSvxuAM0SCIJsAlFFsJAECCQoGQVwgeQ4wZFL04FRhIT0+mhPAm77dLlO12Q3yf0kawCAJEgAWPte+xAmZRFKDug5Ijx9oCyyrQJuHIpX+JN4k8DTJPwWgNng0+4jBfKY7lNfi3ZWz225gFsHEk9KicMQDGQHdASfXmeeFD3RnorjWyIg2M/c1cJEn5SiwwjiGf5qHaB/JrfyIDqFumkCgv3ctXLd0mckHtxS+Kvtz/jy5ePRzuplOzbFAXzuNsMDQKu2itMI/er3LGC1MNG3zfBrZVI8UF5S+oEdX9YQumUw0U6JAS/wCoiWej/urc5FfbGCkjwFKZ1QdSKWIn6MpvDxTyuW7SX5xEJvzQnXApo+iZUJRTkPsHyj8HdW+vBecyH2FvssO+lcJIXHPl+08E0AWEhRNMZfNE+xliGkKOKQF/i7Kn0Yenh3Vvh0yxJ2gRzK1y05zW7eMbBcu75IbQjeJ4jD9xfB73OWpR3MmY7St6N7HAtQKXvoYYVtbchDbZFtfkgTkBUeJP1S0bvM2uYY7oSokIl2L9mmuS7XFHQypqN3OI5f/lavkKuSdvBrzyCfwhBfRZvQswpo2hu/h0TtRuFJ4PYKY78AwAvDcXw3lbRtb7FC1+y+GAnGgNF0n2bj3OwFniTKC4xu/1qSOLdReF7+LVsy/ZoJ2Od1kSryGyfvZEwHPcADACWCtgIkebMXeJJQTJJPPCm9wRMgZGOmX0OwkqjyAr9+aTBJR9kmax1SVGX6NQmh9W3ghuEtFMArPACwKNOj2Qi4cvzD/oAh5s1C6L76PEw8e73h/snfVvDS14tO4E1H15jviATJgBN4ACjOE6aTNtNyFaAk3zjg0bjmGJ5kPLO92SSecQpPsy5xaRPzmlN4CGDGVgCICa8T1o39vqA6ggcACVywFUBwzFW28ACvSeDPRc0R/Pr1WKYP4yQGR4zA1pP6ua9iyLncDetlRx8qMWw0fp5V8f5o/EodAFjViKQmncKDCkZsBVyaDozuqVqYAllnB08CZ/9YNZR9xBKIDAWzSzpOnV92M2EzO29SlQ3jmbzGORASEpKDTuCtyqzMAzwADJodRZq+tOs5Ikwi5eWVejPhCSZTqhY282sqYPpAWQTksc2CB4x1HMOTkMRRvNU47VgAANDvf4XknFv47CHkHp7EvC50d3tiAIh0FC+Q4qBbeLvFzSU8CHYh1Gh56Jt14xrtqThOoP9/hA/rb9x0MptP2533TGVlN8FTTuEtRbiEB/ClrkSet+OzPzpoE7ovT7aDPOPi4Wb8zuHJLzRlVxtCzZp3AQCindXLswU3PELBD+3h3Wei9PYEw5ov8ihC9ifTgNnrtJV1CnUO6Aq8M/2tAhyRRPlGFrIs8P8Q7LaL+Uxzfvq0bgu9NSeSSTaR7AOQdLMWWC1SEjiiKckmt/CAmxFIs/jLtfMAusvenTqkaegB2E6iziX8FIABVdXDVouUE9ucv1lDVHYXRPaRsoUSwe+fqWoN5Iv80gKfIgTw74qUwxeXFztOz31DcowCI6psGN+Mv1l3bMeudfsPP8EkRZOLDr8AAAAASUVORK5CYII="/>
+          </a>
+
+          <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="twitter"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAE20lEQVRoge3YW2yTdRgG8Odta8GBzh3KoIOd7BzxiGICISCi3GDigQQmEYMYgk4JckEGKGAaTTSiaAwCTsF5gSEuiiEGvSIalwWIohciCE4YbMDKtnbrTh3t9z5ebMWNfB/raRsXfe6+Nf+3v6f/r/2WP5BOOumkk04SkbF408LdVx5UkRVULiRlGkAniYtUHlEba3xr8g5BhGZrsz6+VBBY574QvbYsULa/290XyvA3vCihVMFLqvyZYeVuQJeREBIACBJg/wVIgsRREa5qfm3Kyeja7O3NswXGJqr86690rx+2wN1fdX1BSuYpZ0Y5ysVIFj9tR4ubDjks4PR+sCV+4FraCW4leS+IRSQLSPjtevWelg3FzTcs4PmB45z+nlaAEwF8OSl/wuqfF0gkUXxR9bnxRui2WoAPx4aH2WsRIZa0VeYfHDzbZvaG4/w99w/gQXJlc2P3gZlVzEi0QKR34tok8d0gl9t49VjWtguvZL3X9DpIsSxAgXvwYIBPdo0P1pXtDZbFrffSIYINSeABsJHA9jAclwFZB/btin7JTQuIoZ3/L44Okhm083hpdXsFvDRdZ5Z8V+s8ErlJ4EFiOsmpAJoiEXkqsOnOjuh8U0jYbjQMxV8bNIHEbk9Bx6/F1f55sRQQG+9LEj/wd/7uIGd1vjH1zOD5pgXO/JPZAEiD+SCA5ENiyC/FewK1hZ8FFqOGdqsCpM2VPB5nx4nzkdaNBZeun29+K3hFCe658ScHgJwr4IHCQNvloqq2qsJPrzxRsKs9a/AoobYmiQfJdl/l5G4zquVzwLOv7XZbxPEHiRJTvEUxgCRxhorTAjYaQB7IJYnjAYJ1wY0Fc82cDqsC9c/nBD3VHctBHgaQESMe7H/ClkFYpkR0QeL4/teCVk7TW6i0uuO5u6qDNYDhAvACSV+M+GR+Kq3wAHntf5/rY7EDbFFyKWBbGscnPzJ4EArWWxUw3QGbho8CCN8MeBIQ4nhcBU6vcnWS+t3NgCcZ7go7j8VVAADE4Fsk+sYYDwhq4XX3xF2g/qWcvwCuH1M8ACq+tTLesAAAnFudvZPK9QAiY4In+2yRyDcJFwCA8xU5H0Iwn2TdKOMBYH+X13MlqQKFVS1TDDXuEOhGAl4q/KOBJ6E2MbYP57N8Ekdjh71HaXytlIkkABkVPATY17XZc2I437A7cPbl7A6lvDNat80APkgxtgxni6kAAFzMzdkG8NBo4AFAicreLZ7GlBVAuRiRHn1Wge9HGg/yYGhr0ecxuWIuAMBXObm7eY3raSVXkWgYCTzJU71qrLA61DJLYidzNbS7mi7PgU3mULkMwIwU4M9D5dGQt7ghHkrMOzAk5WKEpe9PKksBPJAavP2xePFAAjvg/uBSbtiBCirWApiUAvwRux2LuzeX+OK1xFwg7yNfCYQLCH2clGdI3joUkhBeobqjl7ZN8BYnfP46tAApU3e2LIoAFSBzQbpITCajp3Sp+cIScgLUV0NvltQmCjcvMJD8T5pyIoZjM4DVKcVD6qn6dkiL98ErmizeskA0ee83T1Anl0CxkuR8AJIAPqDKHwnZG9pS+FM8P5FJFxiczHfPZ9lucc4W6iwRzlQin2Q2BDlUjCfZSSIA0KeUk4D+rWBtr6fot1Qcz6eTTjrppDMi+Q8fgF/hmeYFBwAAAABJRU5ErkJggg=="/>
+          </a>
+
+          <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="linkedin"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADAUlEQVRoge2YW0gUURjHf2dmd1VcL5FYFEZkipAWZlGBQg9hRIWv0ktE0UMRoQQaPQXlhUAK7EGkHisfgkALDLqgvXSRApW8EIFF6UNmuuZld2Z6WBN0Z2Y9m7NrMD+Yl/N958z/P2fOd84MuLi4uCQSETWjpr8CQRUYe4BU5yUBMA28xaCJxsJ2u0R7A7V9DUDNKgqTR4g66ndcsQxbdqzpr0AYjxwRJYswjlNf1GEWUqw7UeWYIFl0UW0VsjaAUeKElpgQ7LEKeWy6+U1bdQ2Cv0HTQFXBmwKK3TCrQppVwGYGTNBD5Ptn6TpXQODGfrrPF5DnnwubShByBoIz3DmRT9n2TFJ9KqW5mbRW5kFwxiF50ZEzoGkU5yydzZIt6aCFVlOTFHIGVJX3X6aWNPWMTILq+BqwRM6AN4XT94Z49WmC6XmNl8M/OfNgOLyQE4Tco1M8DAWg7PbAQhXyLFQh1SF50ZEzMDu5tOJowfClqJCcHhn/i6JCkh9Cc6DNg64DIvwAPF5QfazkWPbvBvQQxq2yiGZxsTtKvIvN3mkuHd5EecF6tmWlMBfS6f0WoK1njNbX48x5UmOaybisvl0bknh6oZjsNN9iW7JXoTQ3k9LcTE4dmOJoSx+jQXkTcos4Rh6e3blE/HJ256Rx/2QBYj4gPXZcDORmRa9SB/PWcSQ/FXS5PSUuBnTD4OaLEQ41f6Dybj/PB8dN8ypLssNFQYK4GLj65DNVHWM8+6rSNhiivGWAzo8/IvL2bc1Ymwaau7+DLwWEAooHzevneudIRN7GdN9CiV05jhswDBifWaj7i3dV6B2NPACmJXmANWZAmO5PgomZyA3PPNeeuLxCTuIaSDSugUTjGkg0/70B662jts+IaJv9ZX5aVDyQnBE9LjPWchoKTbXafdAEWP53zmxgmXisuTBpFbB7hd7J3MFhLLVYGzBockRKLBiGpRZrA42F7QhR54ggGQTXaCx6bB2OxuXeY+iiGsFerP5Yrz4B4A2G0WQn3sXFxSXx/AFEutZ1as21kAAAAABJRU5ErkJggg=="/>
+          </a> -->
+
+            <!--//   $('head').append('<meta property="og:title" content="{{activeConnection.connection.qr_code}}"/>');-->
+            <!--//   $('head').append('<meta property="og:image" content="{{activeConnection.connection.qr_code}}"/>');-->
+            <!--//   $('head').append('<meta property="og:description" content="{{activeConnection.connection.qr_code}}"/>');-->
+
+
+
+
+
+
+            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+            <!--<div class="addthis_inline_share_toolbox"></div>-->
+
+            <!--<div class="addthis_inline_share_toolbox"></div>-->
+
+
+
+
+
+
+            <!--<a style="cursor: pointer;"-->
+            <!--socialshare -->
+            <!--socialshare-provider="email"-->
+            <!--socialshare-text="{{activeConnection.connection.code}}"-->
+            <!--socialshare-url="{{activeConnection.connection.qr_code}}">-->
+
+
+            <!--<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFV0lEQVRoge2XS2xUVRjHf+fOTGc6bceRAhUoBoHwMCYoJJggG8JCMXGj0UQCG5VHfBEkQMRNcaGJQNQQKxITRRNi4qIbLYlhJwIiIhglxKqJ1vIotp3WzrQzc+/5XMzr3tt7h5nplA39FnfunDnfOf/f/3zn3DswHdNxZ4eaklE7foozHtyPYhNaAPmctO7gvYcS9Z6q/gB7Lz0BqhOkHQGFAALCDUH2cGDlZ/Wcrn4Aey7MRQUOI/KkApC8cPu9AEq6RQIvcmjlX/WYdvIAHWKQuvSCQg4itOSE5oXb70XykwmIpFDypu7tPciXz1iTmX5yAHsvrFCao8Bqu1C786rgPLZVKIFd1LCV9x/5oVYJtQHsPN1ohMJ7RbMPJOQSlRftDVT4tIGZCuk0Lf0GnetGpx5g14UNCt0JssBDjFO0y/nyYNIH8or1wfquqQHYcbbNCAYOCGyeINq35ssDeYIhX5libOfI+r46AYjitXObDdQhkJllHPQS4wupXHkusITSdGTnnT1MR4euHWDn6cWKwBGFrP/21ftZs6Dl1rx1iO9+H2LdO2cAOaVMY1vmk8cv+/X1Bth6PmQ0ma8jsg8Ig5A9tHqK5HpHZNuJwqqlReu3zNCNtzm6LevuF/RKNpoyH6J53r6sWpddyfqH1oV9FlbI/nB21vw0bHF38wTA0s+CvU7Bsm4vgBLt2GcispFKAdpXtEdv/nadTDJNYdNpPakHZvWhNYUKiMSizF+7PPrrsYndPAGiM6Lc+/B9DP8zyEDPDbTWt72ElFgEQkHaHlxA26pFGMrw7OddQoBSinh7K02zWhjsuX5bAQRoXTqX9jXLCDaGEQFdPIZdOr0al3X1505jyV1EYFXcYPfyAAubpuYvRCF6xhUf3TS4nFK56tW5+UXg+7WxCZP7rkDh4VLgPj9ksfGMxVPzDLYvCtDkn1lTDFmK44MBvkkYWOI0T0QQnwLwleF4OOYpTA1f/G1x8rrFS4sNNswxJv0+bgqcGAlyfChEynIKdkNUDuByH6R0ogn8m4aOXzRdvZrdyxSLm2vD+Hk8wMeDDfRmVLFUHK4LoG33lQJ4uV9sp+TMxQRsOis82ibsWGIQD1Um/GrW4NNEmB/HgmUFF9vye6FiAF/3Ha25ixbovgqn+jXPLYSn28HwWZCUKLpGwnw92kBWVK4sHILzpeLYvPb5KwWwvxi62gvul3By1+EsvHtF6O4Tdi2FB+4qpWng1FgDx/9rJGEaeVHiI9jWVtwLXmLKABT72pfQw32vErsyothyTnjsHuHlJTCkAhwbidKTDfkKdp82XnuhulOoSveL7VIC6b6mONmvaJ4dJjYzBLUIdu+FigEoJVfjfi5Nir+nTU26L8XIQJrWOVHC0UB1gl17oWKAybjvyM/nZVIWV/8YIRprYEZbI0ZQVSS42Fb1g8zmYiXu29O883LjJRMZUok0LTMjxFrDKFRZwaXNXOUKeLlYzn2xdZ6Y5xxPCwz3j5McyhCfHSHSFPIVLPkV8TPMH2AK3MdlQjZj0d+bJBINEW+LEAioCYIdR201JVTexSrcd41XMqHUdyyZYezPDC13h2mOh/NjS/4BZy+takqojItewzghbXm2veTEx2GOAMMDaZLDGWKtEcKNtleMWt6FHBOUvpZmc7lYlF1RifnlCWZGGLiWItwYIDbDVlaF0qoUwM9FRynYIcu4L7dw395e6DqeNBlPjhKNNdAcaygZ4BHefzSF4alxH588mWCCCIwm0tzsSzKeNBEtw5UDKNmNUon6uy8eebZPhwm5X0xTkxgYk+RI5qin1umYjumYjum4o+N/cwnWm7WQCiYAAAAASUVORK5CYII="/>-->
+            <!--</a>-->
+
+            <!--<br><br><br>-->
+            <!--<a class="badge bg-primary" ng-click="printToCart('printSectionId')">Print QR code</a>-->
+
+
+
+            <div id="printSectionId" style="position: fixed; left: -200vw;">
+              <h3 style="width: 100%; text-align: center;"> Residence area name <span
+                  class="float-right badge">{{activeConnection.connection.visitor_area.area_name}}</span></h3>
+              <!--<h3 style="text-align: center">{{activeConnection.connection.name}}</h3>-->
+
+
+              <div style="width: 100%;display: flex;justify-content: center;">
+                <img width="250px" height="250px" class="img-circle elevation-2" style="float: left;"
+                  src="{{activeConnection.connection.profile_image}}" ng-if="activeConnection.connection.profile_image">
+                <ul style="display: flex;flex-direction: column; ">
+                  <li class="nav-item" style="padding: 5px 0px;">
+                    <a class="nav-link">
+                      <b> Visitor Name: </b><span class="float-right badge">{{activeConnection.connection.name}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" style="padding: 5px 0px;" ng-if="activeConnection.connection.timedatefrom">
+                    <a class="nav-link">
+                      <b> Interval:</b> <span class="float-right badge">From: {{activeConnection.connection.timedatefrom
+                        | date : "dd.MM.y HH:mm"}} - To: {{activeConnection.connection.timedateto | date : "dd.MM.y
+                        HH:mm"}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" style="padding: 5px 0px;">
+                    <a class="nav-link">
+                      <b> Vehicle/s:</b> <span
+                        class="float-right badge">{{activeConnection.connection.vehicle_number}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" style="padding: 5px 0px;">
+                    <a class="nav-link" ng-if="activeConnection.connection.visitor_resident != null">
+                      <b>Subscriber name:</b> <span
+                        class="float-right badge">{{activeConnection.connection.visitor_resident.name}}</span>
+                    </a>
+                    <a class="nav-link" ng-if="activeConnection.connection.visitor_user != null">
+                      <b> Subscriber name: </b><span
+                        class="float-right badge">{{activeConnection.connection.visitor_user.name}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item" style="padding: 5px 0px;">
+                    <a class="nav-link">
+                      <b> Comment: </b><span class="float-right badge">{{activeConnection.connection.comment}}</span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+
+
+              <!-- <div style="width:100%; display: block; margin: auto;">
+                <div style="display: flex;justify-content: center;">
+                  <ul style="display: flex;flex-direction: column;">
+                    <li class="nav-item" style="padding: 5px 0px;">
+                      <a class="nav-link" >
+                       <b> Visitor Name: </b><span class="float-right badge">{{activeConnection.connection.name}}</span>
+                      </a>
+                    </li>
+                    <li class="nav-item" style="padding: 5px 0px;" ng-if="activeConnection.connection.timedatefrom">
+                      <a class="nav-link">
+                       <b> Interval:</b> <span class="float-right badge">From: {{activeConnection.connection.timedatefrom | date :  "dd.MM.y HH:mm"}} - To: {{activeConnection.connection.timedateto | date :  "dd.MM.y HH:mm"}}</span>
+                      </a>
+                    </li>
+                    <li class="nav-item" style="padding: 5px 0px;">
+                      <a class="nav-link">
+                       <b> Vehicle/s:</b> <span class="float-right badge">{{activeConnection.connection.vehicle_number}}</span>
+                      </a>
+                    </li>
+                    <li class="nav-item" style="padding: 5px 0px;">
+                      <a class="nav-link" ng-if="activeConnection.connection.visitor_resident != null">
+                        <b>Subscriber name:</b> <span class="float-right badge">{{activeConnection.connection.visitor_resident.name}}</span>
+                      </a>
+                      <a class="nav-link" ng-if="activeConnection.connection.visitor_user != null">
+                       <b> Subscriber name: </b><span class="float-right badge">{{activeConnection.connection.visitor_user.name}}</span>
+                      </a>
+                    </li>
+                    <li class="nav-item" style="padding: 5px 0px;">
+                      <a class="nav-link">
+                      <b>  Comment: </b><span class="float-right badge">{{activeConnection.connection.comment}}</span>
+                      </a>
+                    </li>
+  
+                  </ul>
+                </div>
+                  
+                
+              </div> -->
+              <!--<h4 style="text-align: center">{{activeConnection.connection.code}}</h4>-->
+
+              <div style="text-align: center; width: 100%;">
+                <img width="500px" height="500px" class="img-circle elevation-2"
+                  src="{{activeConnection.connection.qr_code}}">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card-footer p-0">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link">
+                Name <span class="float-right badge">{{activeConnection.connection.name}}</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link">
+                Email <span class="float-right badge">{{activeConnection.connection.email}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Phone <span class="float-right badge">{{activeConnection.connection.phone}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Company <span class="float-right badge">{{activeConnection.connection.company}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Comment <span class="float-right badge">{{activeConnection.connection.comment}}</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link">
+                Code <span class="float-right badge">{{activeConnection.connection.code}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Number of guests <span class="float-right badge">{{activeConnection.connection.number_of_guests}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Registered date <span class="float-right badge">{{activeConnection.connection.registered_date | date :
+                  "dd.MM.y HH:mm"}}</span>
+              </a>
+            </li>
+            <li class="nav-item" ng-if="activeConnection.connection.timedatefrom">
+              <a class="nav-link">
+                Interval <span class="float-right badge">{{activeConnection.connection.timedatefrom | date : "dd.MM.y
+                  HH:mm"}} - {{activeConnection.connection.timedateto | date : "dd.MM.y HH:mm"}}</span>
+              </a>
+            </li>
+            <!--<li class="nav-item">-->
+            <!--  <a class="nav-link">-->
+            <!--    Validity description <span class="float-right badge">{{activeConnection.connection.validity_description}}</span>-->
+            <!--  </a>-->
+            <!--</li>-->
+            <li class="nav-item">
+              <a class="nav-link">
+                Vehicle/s <span class="float-right badge">{{activeConnection.connection.vehicle_number}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+                Residence area name <span
+                  class="float-right badge">{{activeConnection.connection.visitor_area.area_name}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">
+
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_resident != null">
+                Subscriber name: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_resident.name}}</span>
+              </a>
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_user != null">
+                Subscriber name: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_user.name}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_resident != null">
+                Subscriber phone: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_resident.phone}}</span>
+              </a>
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_user != null">
+                Subscriber phone: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_user.phone}}</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_resident != null">
+                Subscriber email: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_resident.email}}</span>
+              </a>
+              <a class="nav-link" ng-if="activeConnection.connection.visitor_user != null">
+                Subscriber email: <span
+                  class="float-right badge">{{activeConnection.connection.visitor_user.email}}</span>
+              </a>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="card-footer">
+      <button data-dismiss="modal" class="btn btn-default">Close</button>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div id="shareModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <div class="card card-widget widget-user-2">
+
+          <img src="{{activeConnection.connection.qr_code}}" width="220px">
+
+          <div class="socialSharing">
+
+            <!-- <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="facebook"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFEklEQVRoge2ZW2gcVRjH/2c22SQ1aZLNRXNraFATvKFs0QdfTPTFiKCIQUwFwZQYkqIY8cELrKLFF2+0G4yVgpBgm4q0oO2DJvpgVUICKohtUFuSzcZoLrK7uezOzPn7kLRddmZ2ZjJJfGg+WHZ2zjnf/P7nfOc7c84CO7Zj17aJTfEyRF/TSvxuAM0SCIJsAlFFsJAECCQoGQVwgeQ4wZFL04FRhIT0+mhPAm77dLlO12Q3yf0kawCAJEgAWPte+xAmZRFKDug5Ijx9oCyyrQJuHIpX+JN4k8DTJPwWgNng0+4jBfKY7lNfi3ZWz225gFsHEk9KicMQDGQHdASfXmeeFD3RnorjWyIg2M/c1cJEn5SiwwjiGf5qHaB/JrfyIDqFumkCgv3ctXLd0mckHtxS+Kvtz/jy5ePRzuplOzbFAXzuNsMDQKu2itMI/er3LGC1MNG3zfBrZVI8UF5S+oEdX9YQumUw0U6JAS/wCoiWej/urc5FfbGCkjwFKZ1QdSKWIn6MpvDxTyuW7SX5xEJvzQnXApo+iZUJRTkPsHyj8HdW+vBecyH2FvssO+lcJIXHPl+08E0AWEhRNMZfNE+xliGkKOKQF/i7Kn0Yenh3Vvh0yxJ2gRzK1y05zW7eMbBcu75IbQjeJ4jD9xfB73OWpR3MmY7St6N7HAtQKXvoYYVtbchDbZFtfkgTkBUeJP1S0bvM2uYY7oSokIl2L9mmuS7XFHQypqN3OI5f/lavkKuSdvBrzyCfwhBfRZvQswpo2hu/h0TtRuFJ4PYKY78AwAvDcXw3lbRtb7FC1+y+GAnGgNF0n2bj3OwFniTKC4xu/1qSOLdReF7+LVsy/ZoJ2Od1kSryGyfvZEwHPcADACWCtgIkebMXeJJQTJJPPCm9wRMgZGOmX0OwkqjyAr9+aTBJR9kmax1SVGX6NQmh9W3ghuEtFMArPACwKNOj2Qi4cvzD/oAh5s1C6L76PEw8e73h/snfVvDS14tO4E1H15jviATJgBN4ACjOE6aTNtNyFaAk3zjg0bjmGJ5kPLO92SSecQpPsy5xaRPzmlN4CGDGVgCICa8T1o39vqA6ggcACVywFUBwzFW28ACvSeDPRc0R/Pr1WKYP4yQGR4zA1pP6ua9iyLncDetlRx8qMWw0fp5V8f5o/EodAFjViKQmncKDCkZsBVyaDozuqVqYAllnB08CZ/9YNZR9xBKIDAWzSzpOnV92M2EzO29SlQ3jmbzGORASEpKDTuCtyqzMAzwADJodRZq+tOs5Ikwi5eWVejPhCSZTqhY282sqYPpAWQTksc2CB4x1HMOTkMRRvNU47VgAANDvf4XknFv47CHkHp7EvC50d3tiAIh0FC+Q4qBbeLvFzSU8CHYh1Gh56Jt14xrtqThOoP9/hA/rb9x0MptP2533TGVlN8FTTuEtRbiEB/ClrkSet+OzPzpoE7ovT7aDPOPi4Wb8zuHJLzRlVxtCzZp3AQCindXLswU3PELBD+3h3Wei9PYEw5ov8ihC9ifTgNnrtJV1CnUO6Aq8M/2tAhyRRPlGFrIs8P8Q7LaL+Uxzfvq0bgu9NSeSSTaR7AOQdLMWWC1SEjiiKckmt/CAmxFIs/jLtfMAusvenTqkaegB2E6iziX8FIABVdXDVouUE9ucv1lDVHYXRPaRsoUSwe+fqWoN5Iv80gKfIgTw74qUwxeXFztOz31DcowCI6psGN+Mv1l3bMeudfsPP8EkRZOLDr8AAAAASUVORK5CYII="/>
+          </a>
+
+          <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="twitter"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAE20lEQVRoge3YW2yTdRgG8Odta8GBzh3KoIOd7BzxiGICISCi3GDigQQmEYMYgk4JckEGKGAaTTSiaAwCTsF5gSEuiiEGvSIalwWIohciCE4YbMDKtnbrTh3t9z5ebMWNfB/raRsXfe6+Nf+3v6f/r/2WP5BOOumkk04SkbF408LdVx5UkRVULiRlGkAniYtUHlEba3xr8g5BhGZrsz6+VBBY574QvbYsULa/290XyvA3vCihVMFLqvyZYeVuQJeREBIACBJg/wVIgsRREa5qfm3Kyeja7O3NswXGJqr86690rx+2wN1fdX1BSuYpZ0Y5ysVIFj9tR4ubDjks4PR+sCV+4FraCW4leS+IRSQLSPjtevWelg3FzTcs4PmB45z+nlaAEwF8OSl/wuqfF0gkUXxR9bnxRui2WoAPx4aH2WsRIZa0VeYfHDzbZvaG4/w99w/gQXJlc2P3gZlVzEi0QKR34tok8d0gl9t49VjWtguvZL3X9DpIsSxAgXvwYIBPdo0P1pXtDZbFrffSIYINSeABsJHA9jAclwFZB/btin7JTQuIoZ3/L44Okhm083hpdXsFvDRdZ5Z8V+s8ErlJ4EFiOsmpAJoiEXkqsOnOjuh8U0jYbjQMxV8bNIHEbk9Bx6/F1f55sRQQG+9LEj/wd/7uIGd1vjH1zOD5pgXO/JPZAEiD+SCA5ENiyC/FewK1hZ8FFqOGdqsCpM2VPB5nx4nzkdaNBZeun29+K3hFCe658ScHgJwr4IHCQNvloqq2qsJPrzxRsKs9a/AoobYmiQfJdl/l5G4zquVzwLOv7XZbxPEHiRJTvEUxgCRxhorTAjYaQB7IJYnjAYJ1wY0Fc82cDqsC9c/nBD3VHctBHgaQESMe7H/ClkFYpkR0QeL4/teCVk7TW6i0uuO5u6qDNYDhAvACSV+M+GR+Kq3wAHntf5/rY7EDbFFyKWBbGscnPzJ4EArWWxUw3QGbho8CCN8MeBIQ4nhcBU6vcnWS+t3NgCcZ7go7j8VVAADE4Fsk+sYYDwhq4XX3xF2g/qWcvwCuH1M8ACq+tTLesAAAnFudvZPK9QAiY4In+2yRyDcJFwCA8xU5H0Iwn2TdKOMBYH+X13MlqQKFVS1TDDXuEOhGAl4q/KOBJ6E2MbYP57N8Ekdjh71HaXytlIkkABkVPATY17XZc2I437A7cPbl7A6lvDNat80APkgxtgxni6kAAFzMzdkG8NBo4AFAicreLZ7GlBVAuRiRHn1Wge9HGg/yYGhr0ecxuWIuAMBXObm7eY3raSVXkWgYCTzJU71qrLA61DJLYidzNbS7mi7PgU3mULkMwIwU4M9D5dGQt7ghHkrMOzAk5WKEpe9PKksBPJAavP2xePFAAjvg/uBSbtiBCirWApiUAvwRux2LuzeX+OK1xFwg7yNfCYQLCH2clGdI3joUkhBeobqjl7ZN8BYnfP46tAApU3e2LIoAFSBzQbpITCajp3Sp+cIScgLUV0NvltQmCjcvMJD8T5pyIoZjM4DVKcVD6qn6dkiL98ErmizeskA0ee83T1Anl0CxkuR8AJIAPqDKHwnZG9pS+FM8P5FJFxiczHfPZ9lucc4W6iwRzlQin2Q2BDlUjCfZSSIA0KeUk4D+rWBtr6fot1Qcz6eTTjrppDMi+Q8fgF/hmeYFBwAAAABJRU5ErkJggg=="/>
+          </a>
+
+          <a style="cursor: pointer;"
+          socialshare
+          socialshare-provider="linkedin"
+          socialshare-text="{{activeConnection.connection.code}}"
+          socialshare-url="{{activeConnection.connection.qr_code}}">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADAUlEQVRoge2YW0gUURjHf2dmd1VcL5FYFEZkipAWZlGBQg9hRIWv0ktE0UMRoQQaPQXlhUAK7EGkHisfgkALDLqgvXSRApW8EIFF6UNmuuZld2Z6WBN0Z2Y9m7NrMD+Yl/N958z/P2fOd84MuLi4uCQSETWjpr8CQRUYe4BU5yUBMA28xaCJxsJ2u0R7A7V9DUDNKgqTR4g66ndcsQxbdqzpr0AYjxwRJYswjlNf1GEWUqw7UeWYIFl0UW0VsjaAUeKElpgQ7LEKeWy6+U1bdQ2Cv0HTQFXBmwKK3TCrQppVwGYGTNBD5Ptn6TpXQODGfrrPF5DnnwubShByBoIz3DmRT9n2TFJ9KqW5mbRW5kFwxiF50ZEzoGkU5yydzZIt6aCFVlOTFHIGVJX3X6aWNPWMTILq+BqwRM6AN4XT94Z49WmC6XmNl8M/OfNgOLyQE4Tco1M8DAWg7PbAQhXyLFQh1SF50ZEzMDu5tOJowfClqJCcHhn/i6JCkh9Cc6DNg64DIvwAPF5QfazkWPbvBvQQxq2yiGZxsTtKvIvN3mkuHd5EecF6tmWlMBfS6f0WoK1njNbX48x5UmOaybisvl0bknh6oZjsNN9iW7JXoTQ3k9LcTE4dmOJoSx+jQXkTcos4Rh6e3blE/HJ256Rx/2QBYj4gPXZcDORmRa9SB/PWcSQ/FXS5PSUuBnTD4OaLEQ41f6Dybj/PB8dN8ypLssNFQYK4GLj65DNVHWM8+6rSNhiivGWAzo8/IvL2bc1Ymwaau7+DLwWEAooHzevneudIRN7GdN9CiV05jhswDBifWaj7i3dV6B2NPACmJXmANWZAmO5PgomZyA3PPNeeuLxCTuIaSDSugUTjGkg0/70B662jts+IaJv9ZX5aVDyQnBE9LjPWchoKTbXafdAEWP53zmxgmXisuTBpFbB7hd7J3MFhLLVYGzBockRKLBiGpRZrA42F7QhR54ggGQTXaCx6bB2OxuXeY+iiGsFerP5Yrz4B4A2G0WQn3sXFxSXx/AFEutZ1as21kAAAAABJRU5ErkJggg=="/>
+          </a> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <br>
+            <div class="row">
+              <div style="width: 80%; display: inline-block;">
+                <input type="email" class="form-control" ng-model="emailToShare" placeholder="Email where to share..">
+              </div>
+              <div style="width: 20%; display: inline-block;">
+                <a style="cursor: pointer;" ng-click="shareByEmail()">
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFV0lEQVRoge2XS2xUVRjHf+fOTGc6bceRAhUoBoHwMCYoJJggG8JCMXGj0UQCG5VHfBEkQMRNcaGJQNQQKxITRRNi4qIbLYlhJwIiIhglxKqJ1vIotp3WzrQzc+/5XMzr3tt7h5nplA39FnfunDnfOf/f/3zn3DswHdNxZ4eaklE7foozHtyPYhNaAPmctO7gvYcS9Z6q/gB7Lz0BqhOkHQGFAALCDUH2cGDlZ/Wcrn4Aey7MRQUOI/KkApC8cPu9AEq6RQIvcmjlX/WYdvIAHWKQuvSCQg4itOSE5oXb70XykwmIpFDypu7tPciXz1iTmX5yAHsvrFCao8Bqu1C786rgPLZVKIFd1LCV9x/5oVYJtQHsPN1ohMJ7RbMPJOQSlRftDVT4tIGZCuk0Lf0GnetGpx5g14UNCt0JssBDjFO0y/nyYNIH8or1wfquqQHYcbbNCAYOCGyeINq35ssDeYIhX5libOfI+r46AYjitXObDdQhkJllHPQS4wupXHkusITSdGTnnT1MR4euHWDn6cWKwBGFrP/21ftZs6Dl1rx1iO9+H2LdO2cAOaVMY1vmk8cv+/X1Bth6PmQ0ma8jsg8Ig5A9tHqK5HpHZNuJwqqlReu3zNCNtzm6LevuF/RKNpoyH6J53r6sWpddyfqH1oV9FlbI/nB21vw0bHF38wTA0s+CvU7Bsm4vgBLt2GcispFKAdpXtEdv/nadTDJNYdNpPakHZvWhNYUKiMSizF+7PPrrsYndPAGiM6Lc+/B9DP8zyEDPDbTWt72ElFgEQkHaHlxA26pFGMrw7OddQoBSinh7K02zWhjsuX5bAQRoXTqX9jXLCDaGEQFdPIZdOr0al3X1505jyV1EYFXcYPfyAAubpuYvRCF6xhUf3TS4nFK56tW5+UXg+7WxCZP7rkDh4VLgPj9ksfGMxVPzDLYvCtDkn1lTDFmK44MBvkkYWOI0T0QQnwLwleF4OOYpTA1f/G1x8rrFS4sNNswxJv0+bgqcGAlyfChEynIKdkNUDuByH6R0ogn8m4aOXzRdvZrdyxSLm2vD+Hk8wMeDDfRmVLFUHK4LoG33lQJ4uV9sp+TMxQRsOis82ibsWGIQD1Um/GrW4NNEmB/HgmUFF9vye6FiAF/3Ha25ixbovgqn+jXPLYSn28HwWZCUKLpGwnw92kBWVK4sHILzpeLYvPb5KwWwvxi62gvul3By1+EsvHtF6O4Tdi2FB+4qpWng1FgDx/9rJGEaeVHiI9jWVtwLXmLKABT72pfQw32vErsyothyTnjsHuHlJTCkAhwbidKTDfkKdp82XnuhulOoSveL7VIC6b6mONmvaJ4dJjYzBLUIdu+FigEoJVfjfi5Nir+nTU26L8XIQJrWOVHC0UB1gl17oWKAybjvyM/nZVIWV/8YIRprYEZbI0ZQVSS42Fb1g8zmYiXu29O883LjJRMZUok0LTMjxFrDKFRZwaXNXOUKeLlYzn2xdZ6Y5xxPCwz3j5McyhCfHSHSFPIVLPkV8TPMH2AK3MdlQjZj0d+bJBINEW+LEAioCYIdR201JVTexSrcd41XMqHUdyyZYezPDC13h2mOh/NjS/4BZy+takqojItewzghbXm2veTEx2GOAMMDaZLDGWKtEcKNtleMWt6FHBOUvpZmc7lYlF1RifnlCWZGGLiWItwYIDbDVlaF0qoUwM9FRynYIcu4L7dw395e6DqeNBlPjhKNNdAcaygZ4BHefzSF4alxH588mWCCCIwm0tzsSzKeNBEtw5UDKNmNUon6uy8eebZPhwm5X0xTkxgYk+RI5qin1umYjumYjum4o+N/cwnWm7WQCiYAAAAASUVORK5CYII=" />
+                </a>
+              </div>
+            </div>
+
+
+            <br>
+            <a class="badge bg-primary" ng-click="printToCart('printSectionId')">Print QR code</a>
+
+
+            <!--<div id="printSectionId" style="position: fixed; left: -200vw;">-->
+            <!--  <h3 style="text-align: center">{{activeConnection.connection.name}}</h3>-->
+            <!--  <img width="100%" class="img-circle elevation-2" src="{{activeConnection.connection.qr_code}}">-->
+            <!--  <h4 style="text-align: center">{{activeConnection.connection.code}}</h4>-->
+            <!--</div>-->
+
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+
+      <div class="card-footer">
+        <button data-dismiss="modal" class="btn btn-default">Close</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="shareAfterModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <div class="card card-widget widget-user-2">
+
+          <img src="{{createdPass.qr_code}}" width="220px">
+
+          <div class="socialSharing">
+
+            <br>
+            <div class="row">
+              <div style="width: 80%; display: inline-block;">
+                <input type="email" class="form-control" ng-model="emailToShare" placeholder="Email where to share..">
+              </div>
+              <div style="width: 20%; display: inline-block;">
+                <a style="cursor: pointer;" ng-click="shareByEmailA()">
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFV0lEQVRoge2XS2xUVRjHf+fOTGc6bceRAhUoBoHwMCYoJJggG8JCMXGj0UQCG5VHfBEkQMRNcaGJQNQQKxITRRNi4qIbLYlhJwIiIhglxKqJ1vIotp3WzrQzc+/5XMzr3tt7h5nplA39FnfunDnfOf/f/3zn3DswHdNxZ4eaklE7foozHtyPYhNaAPmctO7gvYcS9Z6q/gB7Lz0BqhOkHQGFAALCDUH2cGDlZ/Wcrn4Aey7MRQUOI/KkApC8cPu9AEq6RQIvcmjlX/WYdvIAHWKQuvSCQg4itOSE5oXb70XykwmIpFDypu7tPciXz1iTmX5yAHsvrFCao8Bqu1C786rgPLZVKIFd1LCV9x/5oVYJtQHsPN1ohMJ7RbMPJOQSlRftDVT4tIGZCuk0Lf0GnetGpx5g14UNCt0JssBDjFO0y/nyYNIH8or1wfquqQHYcbbNCAYOCGyeINq35ssDeYIhX5libOfI+r46AYjitXObDdQhkJllHPQS4wupXHkusITSdGTnnT1MR4euHWDn6cWKwBGFrP/21ftZs6Dl1rx1iO9+H2LdO2cAOaVMY1vmk8cv+/X1Bth6PmQ0ma8jsg8Ig5A9tHqK5HpHZNuJwqqlReu3zNCNtzm6LevuF/RKNpoyH6J53r6sWpddyfqH1oV9FlbI/nB21vw0bHF38wTA0s+CvU7Bsm4vgBLt2GcispFKAdpXtEdv/nadTDJNYdNpPakHZvWhNYUKiMSizF+7PPrrsYndPAGiM6Lc+/B9DP8zyEDPDbTWt72ElFgEQkHaHlxA26pFGMrw7OddQoBSinh7K02zWhjsuX5bAQRoXTqX9jXLCDaGEQFdPIZdOr0al3X1505jyV1EYFXcYPfyAAubpuYvRCF6xhUf3TS4nFK56tW5+UXg+7WxCZP7rkDh4VLgPj9ksfGMxVPzDLYvCtDkn1lTDFmK44MBvkkYWOI0T0QQnwLwleF4OOYpTA1f/G1x8rrFS4sNNswxJv0+bgqcGAlyfChEynIKdkNUDuByH6R0ogn8m4aOXzRdvZrdyxSLm2vD+Hk8wMeDDfRmVLFUHK4LoG33lQJ4uV9sp+TMxQRsOis82ibsWGIQD1Um/GrW4NNEmB/HgmUFF9vye6FiAF/3Ha25ixbovgqn+jXPLYSn28HwWZCUKLpGwnw92kBWVK4sHILzpeLYvPb5KwWwvxi62gvul3By1+EsvHtF6O4Tdi2FB+4qpWng1FgDx/9rJGEaeVHiI9jWVtwLXmLKABT72pfQw32vErsyothyTnjsHuHlJTCkAhwbidKTDfkKdp82XnuhulOoSveL7VIC6b6mONmvaJ4dJjYzBLUIdu+FigEoJVfjfi5Nir+nTU26L8XIQJrWOVHC0UB1gl17oWKAybjvyM/nZVIWV/8YIRprYEZbI0ZQVSS42Fb1g8zmYiXu29O883LjJRMZUok0LTMjxFrDKFRZwaXNXOUKeLlYzn2xdZ6Y5xxPCwz3j5McyhCfHSHSFPIVLPkV8TPMH2AK3MdlQjZj0d+bJBINEW+LEAioCYIdR201JVTexSrcd41XMqHUdyyZYezPDC13h2mOh/NjS/4BZy+takqojItewzghbXm2veTEx2GOAMMDaZLDGWKtEcKNtleMWt6FHBOUvpZmc7lYlF1RifnlCWZGGLiWItwYIDbDVlaF0qoUwM9FRynYIcu4L7dw395e6DqeNBlPjhKNNdAcaygZ4BHefzSF4alxH588mWCCCIwm0tzsSzKeNBEtw5UDKNmNUon6uy8eebZPhwm5X0xTkxgYk+RI5qin1umYjumYjum4o+N/cwnWm7WQCiYAAAAASUVORK5CYII=" />
+                </a>
+              </div>
+            </div>
+
+
+            <br>
+            <a class="badge bg-primary" ng-click="printToCart('printSectionIdA')">Print QR code</a>
+
+
+            <div id="printSectionIdA" style="position: fixed; left: -200vw;">
+              <h3 style="text-align: center"> Residence area name <span
+                  class="float-right badge">{{createdPass.residence.area_name}}</span></h3>
+              <!--<h3 style="text-align: center">{{activeConnection.connection.name}}</h3>-->
+              <div style="width:100%; text-align: center;" ng-if="createdPass.profile_image">
+                <img width="50%" class="img-circle elevation-2" src="{{createdPass.profile_image}}">
+              </div>
+              <img width="100%" class="img-circle elevation-2" src="{{createdPass.qr_code}}">
+              <!--<h4 style="text-align: center">{{activeConnection.connection.code}}</h4>-->
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link">
+                    Visitor Name: <span class="float-right badge">{{createdPass.name}}</span>
+                  </a>
+                </li>
+
+
+                <li class="nav-item">
+                  <a class="nav-link">
+                    Interval: <span class="float-right badge">From: {{createdPass.timedatefrom | date : "dd.MM.y
+                      HH:mm"}} - To: {{createdPass.timedateto | date : "dd.MM.y HH:mm"}}</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link">
+                    Vehicle/s: <span class="float-right badge">{{createdPass.vehicle_number}}</span>
+                  </a>
+                </li>
+
+                <li ng-if="activeConnection.visitor_resident != null" class="nav-item">
+                  <a class="nav-link">
+                    Subscriber name: <span class="float-right badge">{{createdPass.visitor_resident.name}}</span>
+                  </a>
+                </li>
+                <li ng-if="activeConnection.visitor_user != null" class="nav-item">
+                  <a class="nav-link">
+                    Subscriber name: <span class="float-right badge">{{createdPass.visitor_user.name}}</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link">
+                    Comment: <span class="float-right badge">{{createdPass.comment}}</span>
+                  </a>
+                </li>
+
+
+
+              </ul>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+
+      <div class="card-footer">
+        <button data-dismiss="modal" class="btn btn-default">Close</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="editconnectionModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Edit Access Pass</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input ng-model="currentAccessPassToEdit.connection.name" type="text" class="form-control" id="name"
+                placeholder="Enter name">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input ng-model="currentAccessPassToEdit.connection.phone" type="text" class="form-control" id="phone"
+                placeholder="Enter phone">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input ng-model="currentAccessPassToEdit.connection.email" type="text" class="form-control" id="email"
+                placeholder="Enter email">
+            </div>
+
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input ng-model="currentAccessPassToEdit.connection.company" type="text" class="form-control" id="company"
+                placeholder="Enter company">
+            </div>
+
+            <div class="form-group">
+              <label for="comment">Comment</label>
+              <input ng-model="currentAccessPassToEdit.connection.comment" type="text" class="form-control" id="comment"
+                placeholder="Enter comment">
+            </div>
+
+            <div class="form-group">
+              <label>Select user type</label>
+              <select class="custom-select" ng-model="currentAccessPassToEdit.connection.type">
+                <option value="{{res.url}}" ng-repeat="res in visitortypes">{{res.visitor_type}}</option>
+              </select>
+            </div>
+
+
+            <!--      <label>Validity</label>-->
+
+            <!--      From: {{connfordatesfrom | date :  "dd.MM.y HH:mm"}} / To: {{connfordatesto | date :  "dd.MM.y HH:mm"}}-->
+
+
+            <!--  <div class="form-group row">-->
+            <!--    <input ng-model="currentAccessPassToEdit.connection.timedatefrom" class="form-control col-md-6"-->
+            <!--    placeholder="Date from"-->
+            <!--    moment-picker="stringDateFrom"-->
+            <!--    locale="en"-->
+            <!--    is_utc="true"-->
+            <!--    format="YYYY-MM-DD HH:mm"-->
+            <!--    start-view="month"-->
+            <!--    min-date="minDateMoment"-->
+            <!--    ng-model-options="{ updateOn: 'blur' }">-->
+            <!--    <input ng-model="currentAccessPassToEdit.connection.timedateto" class="form-control col-md-6"-->
+            <!--  placeholder="Date to"-->
+            <!--  moment-picker="stringDateTo"-->
+            <!--  locale="en"-->
+            <!--  is_utc=true-->
+            <!--  format="YYYY-MM-DD HH:mm"-->
+            <!--  start-view="month"-->
+            <!--  min-date="currentAccessPassToEdit.connection.timedatefrom"-->
+            <!--  ng-model-options="{ updateOn: 'blur' }">-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--                  <label for="comment">Validity Description</label>-->
+            <!--                  <input ng-model="currentAccessPassToEdit.connection.validity_description" type="text" class="form-control" id="comment" placeholder="Enter validity description">-->
+            <!--              </div>-->
+
+            <div class="form-group">
+              <label for="tags">Vehicle number/s</label>
+              <tags-input id="tags" ng-model="currentVehicles">
+              </tags-input>
+            </div>
+
+            <div class="form-group">
+              <label for="guests">Number of guests</label>
+              <input ng-model="currentAccessPassToEdit.connection.number_of_guests" type="text" class="form-control"
+                id="guests" placeholder="Enter number of guests">
+            </div>
+
+
+            <!-- <div class="form-group">
+          <label>Select Location</label>
+          <select class="custom-select" ng-change="selectAreasByResidence(searchresidence)" ng-model="searchresidence">
+            <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+          </select>
+        </div> -->
+
+            <div class="form-group">
+              <label>Select Location area</label>
+              <select class="custom-select" ng-model="currentAccessPassToEdit.connection.residence_area">
+                <option ng-repeat="ar in accountareas" value="{{ar.area.url}}">{{ar.area.area_name}}</option>
+              </select>
+            </div>
+
+
+            <!-- <div class="form-group">
+          <label>Select access area</label>
+          <select class="custom-select" ng-model="resident_area">
+            <option value="{{res.area.url}}" ng-repeat="res in accountareas">{{res.area.area_name}}</option>
+          </select>
+        </div> -->
+
+            <!--<div class="form-group">-->
+            <!--  <label>Select resident</label>-->
+            <!--  <select class="custom-select" ng-model="currentAccessPassToEdit.connection.resident">-->
+            <!--    <option ng-if="res.user.residence_area == currentAccessPassToEdit.connection.residence_area" value="{{res.user.url}}" ng-repeat="res in residentsareas">{{res.user.name}}</option>-->
+            <!--  </select>-->
+            <!--</div>-->
+
+
+            <div class="card-footer">
+              <button data-dismiss="modal" class="btn btn-default">Close</button>
+              <button type="submit" class="btn btn-primary" ng-click="editPass()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>

@@ -1,0 +1,368 @@
+<div class="row">
+
+  <!-- Trigger the modal with a button -->
+  <button ng-if="myAccessType.can_edit_users" data-backdrop="false" type="button" ng-click="openNewUserModal()" class="btn btn-primary btn-md btnAddLocation" data-toggle="modal" data-target="#myModal">Add a New Agent</button>
+  
+  
+  <!-- Syndics Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+  
+  
+        <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Create New Agent</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">                 
+  
+                  <div class="form-group">
+                    <label for="locationname">Name</label>
+                    <input ng-model="name" type="text" class="form-control" id="locationname" placeholder="Enter name">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Email Address</label>
+                    <input ng-model="email" type="email" class="form-control" id="email" placeholder="Enter email">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input ng-model="phone" type="number" class="form-control" id="phone" placeholder="Enter phone">
+                  </div>
+  
+                  <div class="form-group">
+                    <label for="personname">ID / Passport Number</label>
+                    <input ng-model="passport" type="text" class="form-control" id="passport" placeholder="Enter ID or Passport Number">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Vehicle Number</label>
+                    <input ng-model="vehicle" type="text" class="form-control" id="vehicle" placeholder="Enter Vehicle Number">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Address</label>
+                    <textarea ng-model="address" type="text" class="form-control" id="address" placeholder="Enter Address"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Passcode</label>
+                    <input ng-model="passcode" type="text" class="form-control" id="passcode" placeholder="Enter Agent Passcode">
+                  </div>
+  
+                  <!-- <div class="form-group">
+                    <label>Select user type</label>
+                    <select class="custom-select" ng-model="usertype" disabled="true">
+                      <option ng-if="ut.url != 'https://connect.s-onedigital.com/api/appusertype/3/'" ng-repeat="ut in appusertypes" value="{{ut.url}}">{{ut.app_user_type}}</option>
+                    </select>
+                  </div> -->
+  
+                  <!-- <div class="form-group">
+                    <label>Select user access type</label>
+                    <select class="custom-select" ng-model="accesstype">
+                      <option ng-repeat="at in accesstypes" value="{{at.url}}">{{at.access_type}}</option>
+                    </select>
+                  </div> -->
+
+
+
+                  <div class="card card-secondary" ng-if="usertype != 'https://connect.s-onedigital.com/api/appusertype/1/'">
+                    <div class="card-header">
+                      <h3 class="card-title">Assign user locations</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">    
+
+
+
+  
+                  <div class="form-group">
+                    <label>Select Location</label>
+                    <select class="custom-select" ng-change="selectAreasByResidence(userresidence.residenceToSave)" ng-model="userresidence.residenceToSave">
+                      <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+                    </select>
+                  </div>
+  
+                  <div  class="form-group">
+                    <label>Select Location area</label>
+                    <select class="custom-select" ng-model="userarea.areaToSave">
+                      <option ng-repeat="ar in accountareas track by $index" value="{{ar.area.url}}">{{ar.area.area_name}} </option>
+                    </select>
+                    <!-- <div ng-repeat="sa in areas" style="padding: 5px 10px; border: 1px solid #ddd;" ng-click="assignArea(sa)">{{sa.area_name}} <img style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACdElEQVRIibWVv0/TURTFP/f1F2D4sRhhcAUHh0oFook/+K0k6KASAsRIjBuDf4CYRkycHXQwmi4ikcHBQQUSCsaoEIvoBI46ILhIjbZA+66DFintt1CCZ3v33HPOe3l59wlbwB8Olbmst9liqsSwD0AtixjmTMI1FmnuWM6lFyeienwwgJogoq2Ax6FtFWFErAlGGjtnthVw5PVw4Uo8cQe4lGsDm2AFCRVLvG+ivjfuGFATHi5PsvYUlZptGqdBYdprOTPV1LWYEXAyHCpYVt+kQO1OzDcgIj+Lj0fa238BuFPVqPru5jK/VlVLsfvPVXxfW+HWp3dOrQFb9OM2cGX9BP7woN+oRADjpHp57Dx7NgQ0vnqS6xQKWjPT0B0xAMaagVzmO4CAXAcwgbHhUkRbdtE8hdP+cKjMqCvRCnj/Q4BHKGhyq0qliKYx/Qdqadi7P61W5P731ko9PsLHzqXx49++MDA3nVYTtZVuEa3YHF3q9lHidj6UQAZf5vFlaTQVBlQzmd2BqKpBZGEzEbOJvM1iyayaBakef9QBPN7KIM93AICKXDCSdI8Aq/ntd1tY8caSoybS3LGMMLLb7oK8mGrriRoAVdMP2F30t6jcgL/D7n1D54fA+FBI0ctOitGlz2nDLjfkfuoDWp+mxRLvi6rvIFCXTXJzfjpbORsivgLX1dRifcBN1PfGPZazCtt2yoS8Tawl2t4c7YhlBABMNXUtlsrKCUEekN+dWJB7JRKv/9h6cSkt0klxeHLokE1qEDiF8zBcFeR5Umxwtr57NlvDlp963bOHJauFrhZRWylIOYCiXxWZ98bt2FRbTzSX/jdeLtfCBzbDYAAAAABJRU5ErkJggg=="/></div> -->
+
+                  </div>
+
+                  <!-- <p style="text-align: center; padding: 10px 10px 0px 10px;">Or you can search for areas</p>
+
+                  <input type="text" class="form-control" placeholder="Search for an area.." ng-model="query" ng-change="searchForArea(query)">
+
+                  <div style="height: 20px;"></div>
+
+                  <div ng-repeat="sa in searchedAreas" style="padding: 5px 10px; border: 1px solid #ddd;" ng-click="assignArea(sa)">{{sa.area_name}} <img style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACdElEQVRIibWVv0/TURTFP/f1F2D4sRhhcAUHh0oFook/+K0k6KASAsRIjBuDf4CYRkycHXQwmi4ikcHBQQUSCsaoEIvoBI46ILhIjbZA+66DFintt1CCZ3v33HPOe3l59wlbwB8Olbmst9liqsSwD0AtixjmTMI1FmnuWM6lFyeienwwgJogoq2Ax6FtFWFErAlGGjtnthVw5PVw4Uo8cQe4lGsDm2AFCRVLvG+ivjfuGFATHi5PsvYUlZptGqdBYdprOTPV1LWYEXAyHCpYVt+kQO1OzDcgIj+Lj0fa238BuFPVqPru5jK/VlVLsfvPVXxfW+HWp3dOrQFb9OM2cGX9BP7woN+oRADjpHp57Dx7NgQ0vnqS6xQKWjPT0B0xAMaagVzmO4CAXAcwgbHhUkRbdtE8hdP+cKjMqCvRCnj/Q4BHKGhyq0qliKYx/Qdqadi7P61W5P731ko9PsLHzqXx49++MDA3nVYTtZVuEa3YHF3q9lHidj6UQAZf5vFlaTQVBlQzmd2BqKpBZGEzEbOJvM1iyayaBakef9QBPN7KIM93AICKXDCSdI8Aq/ntd1tY8caSoybS3LGMMLLb7oK8mGrriRoAVdMP2F30t6jcgL/D7n1D54fA+FBI0ctOitGlz2nDLjfkfuoDWp+mxRLvi6rvIFCXTXJzfjpbORsivgLX1dRifcBN1PfGPZazCtt2yoS8Tawl2t4c7YhlBABMNXUtlsrKCUEekN+dWJB7JRKv/9h6cSkt0klxeHLokE1qEDiF8zBcFeR5Umxwtr57NlvDlp963bOHJauFrhZRWylIOYCiXxWZ98bt2FRbTzSX/jdeLtfCBzbDYAAAAABJRU5ErkJggg=="/></div>
+
+
+                  <p ng-if="finalAreas.length>0" style="text-align: center; padding: 20px 10px 0px 10px; font-weight: 700;">Assigned areas</p>
+
+                  <div ng-repeat="sa in finalAreas track by $index" style="padding: 5px 10px; border: 1px solid #ddd;">{{sa.name}} <img ng-click="removeArea(sa)" style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACKUlEQVRIibWVz0vTcRjHX8/HbZpKC4LSIMqZdq3EuvUDKsuD7bIuQQ6CTgb+A8WovyCoDmPpIjzEDooezLzYzYRF3YqIJR1MocNWmvtu+zxddMzpptOv79vneZ7P6/3A58PzCNsoFQwfMpZrip7GcBQAy6KIfsn7GqbbE9F0tftSKTEf7O9SSwShB/BWKHMUpsSayMmJ4Y87MvgZCh0oOI3PgXC1BspkUYY1IwNtM/HVigap3nALPh0XpXuH4PJu5wrq7QuMxxY3GaQuhxuMX98rnN8NvERJn62/eGwiugJgik5+feECHKDLMdmnRS5AKhg+I6rJUsM9SkXoPjH2KmkAxOoTF+FrSB4ByPfQfX+dk10CfC4aAORU5Ijx5LI9+wAH8Bq1Vz1q6Sz/7Ycf3KPxwrmaaCuzSX4/G9oQU+j0INIKuiFhmpswzU01GWxZL9JqQHVzxiWpqgdYKI/bP8vYv8s1sbaqV5UFmQ/231blza67rCJBQybvrZ8CnH3gZx2n8M60J6JphSm36SLytmNyJGMA1NQ9BKyLfKsFeQxr4yEwOvQZZdgtuiqx9QVUnD+akQGQDy7wk576lcH1Q9GgbSa+atVzS2BuD/DZvLG9xxOJf5sMAALjsUWblksoL6ntTawqUU3LlVOjr5dKExV37o++u2dVJCJwg8rD0BGRSQuRtrH4p60Ktl3q327eOejz1V1X6ARa1sK/EPmay+anOyZHMtXu/wdrdsgguBExOAAAAABJRU5ErkJggg=="/></div> -->
+
+
+                  </div>
+                  </div>
+  
+    
+              </div>
+    
+    
+            <div class="card-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" ng-click="addUser(usertype, accesstype, userarea.areaToSave, userresidence.residenceToSave)">Add User</button>
+            </div>
+        </div>
+      </div></div></div></div>
+    </div>
+    
+    
+        <div class="col-md-12">
+            <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Agents List</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  
+                   
+                    <table class="table table-bordered">
+                        <thead>                  
+                          <tr>
+                            <th>Name</th>
+                            <th>Contact Phone</th>
+                            <th>Contact Email</th>
+                            <th>Passcode</th>
+                            <!--<th>Last login</th>-->
+                            <th>Type</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <td><input ng-model="searchtxt.name" type="text" class="form-control" placeholder="Filter"></td>
+                            <td><input ng-model="searchtxt.phone" type="text" class="form-control" placeholder="Filter"></td>
+                            <td><input ng-model="searchtxt.email" type="text" class="form-control" placeholder="Filter"></td>
+                            <td><input ng-model="searchtxt.passcode" type="text" class="form-control" placeholder="Filter"></td>
+                            <td></td>
+                            <td><input ng-model="searchtxt.type.app_user_type" type="text" class="form-control" placeholder="Filter"></td>
+
+
+                            <tr ng-repeat="ag in appusers | filter:searchtxt | orderBy: 'name'" ng-if="isAdmin == true && ag.usertype == 'https://connect.s-onedigital.com/api/appusertype/3/'">
+                              <td><span style="font-weight: 900; text-transform: uppercase;">{{ag.name}}</span></td>
+                              <td><a href="tel:{{ag.phone}}">
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC"/> 
+                                {{ag.phone}}</a> </td>
+                              <td><a href="mailto:{{ag.user.email}}">
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAAE7ElEQVQ4jZ1Ua0xTZxh+ek57SqEXKG0p91JQLgoK6iZscSwzczpjgqaaTCduOmecLkgGm5vZTqK7amYc4oQwdcZlGZg53X5sioLAAAeC4AW5KFAQSlsuvZwe25727MfUVUWX7P35vM/zfO/7vd/7CfCUWFF8WpaUHJUnlQapJZRI4fL4nSzDWkw25vcTOxaNPkknmA4sPNb2ki46fLtKJc2OigjTEMS/NJ7nYbbYHRaro804MlF563R3WVXVat8TTXPpGuHiDO2huRm6dSESSnKr39zpYNhmp9Mz7ON8rJAig4IoKlIqFWcl6tTzhUJS2HljqLqne+yd0m3P9jxW3ebNraIvf+37rfaOn//pyuTQrh86dxgMleSTWiw+enllRcNIW52J5482jV1/+3DzjMdIe37uKq8d8fM/Xrb2FR5pzwnMbdpbl7G9tGnl+s+qwwPx9Qerw0vODtTWmXj+0IWhJgNdSQGAEAAKyluWZs1JyLc77jo7uoaLvn4zsxEAio63L9PFqnbFRYUvkMrEQpPJbtFoWk8mz4zKGx2bqvvYkLZG8U3zOnloyLm0lOiFZuusj6qATwgA0OtUW6QhYqqvb+zMF+vmngKA94+1v5ozL/H79NSYbCfDWvv6zW3iIJJcME+/IXlmpFYmC7YDQMm7C4d7ekdLeZ5HdKRyFU3TBLGi+LRMpVJkuxg31907UgYABrqSSkyM+DQ8XKbquGa8cL6ufe5bz0XOq2/sXiogSAYAOJ/Pfv8aenpvlg8NW2/r4lSpVs2SJYQ+JWp5pFahvmOaullWkFMPAEn6Gfkz9BFzLOMOW3fXnYKKgsVjALB/04K/xiftLQDg8XAPTKvo1R6Xy3tdLBYSitCQVEIeItGSBAGPhxsABDwAqDXyLJIkYDROnDu4Pedq4HD8frAA4GK9tkDcc6/yIIlITogpkRwAvJzvAYkSUREAYLMx/Y++EpIkQgGAdXnsgbhISCoBwM1yDsLn87sBgCQEovsE3u8nAcAv4McDhQa6kgqiRPFerw+sx/1gTbd82xitDA3OdDjuei0m20WCcXpsAECQ/5wEAAzDjgNAqEySHGiq1yVtjI8PT+T9PMBx3vt4nFpZHKkN0/YbrfVlhc+3EqMj9vMTNoaVhohnG3ZUSgDAwbiv+P084uLVy4uOtL0AAAWHL2WnpcUUGI3jrIgSIixMngkAH5zo2JqeEZNvm2KZocHxr4B7u3/44nBTSlLUwvO114t2r03fl0vXBK3JTaqflRIzf2LCOWWdZAbUSqme43y+hubeMyuWZebb7OyEddw5Eh+nTOW8fu5Sa98ees3sPQBAAkDmy/myBJ3mFVJIxmrT8n45uXPRZEL22nrW5YnmOJ9SJBQET0wyN272mj5sGZzaJ/ZxakKACJIkpGazo/1q1zC9+7X00ocmmkvXCA/c2+GD1caabSUNUY9O/X/FtpJLCRUNo9fqTDx/pHHs6s7jHRsBftr/FgA2fF6jK/yuZdV0uYdEmw80xKUmR1dkzIpdDAD9g+ZOh9N9mXF5Bjkv5wIPjSRYpJCGSBK1EfJnxizOP7e+GL30qaYAQNM04dbnvREbq1yrUsqyIjRyhUDwMI3jfDBb7Lf7ByynduYlv/efpoHx+t4/NOow9XK5TKQUUyK5h/MzrNvrYOx3B91XyLPl5fO90+n+Bnj1JdCPjO1wAAAAAElFTkSuQmCC"/>
+                                {{ag.email}}</a> </td>
+                              <td>{{ag.passcode}}</td>
+                              <!--<td>{{ag.user.login_date}}</td>-->
+                              <td>{{ag.type.app_user_type}}</td>
+                              <td>
+                                <span ng-if="myAccessType.can_edit_users" class="badge bg-primary" data-toggle="modal" data-target="#editModal" ng-click="selectUserToEdit(ag)">edit</span>
+                                  <span ng-if="myAccessType.can_edit_users && ag.name != 'Master Account'" class="badge bg-warning" ng-confirm-click="removeData(ag.url, ag.name, ag.email)" ng-confirm-message="You are about to remove the user.">remove</span>
+                                </td>
+                            </tr>
+
+
+                            <tr ng-repeat="ag in appusers | filter:searchtxt | orderBy: 'name'" ng-if="isAdmin == false && ag.residence_area == myUserArea">
+                              <td><span style="font-weight: 900; text-transform: uppercase;">{{ag.name}}</span></td>
+                              <td><a href="tel:{{ag.phone}}">
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC"/> 
+                                {{ag.phone}}</a> </td>
+                              <td><a href="mailto:{{ag.email}}">
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAAE7ElEQVQ4jZ1Ua0xTZxh+ek57SqEXKG0p91JQLgoK6iZscSwzczpjgqaaTCduOmecLkgGm5vZTqK7amYc4oQwdcZlGZg53X5sioLAAAeC4AW5KFAQSlsuvZwe25727MfUVUWX7P35vM/zfO/7vd/7CfCUWFF8WpaUHJUnlQapJZRI4fL4nSzDWkw25vcTOxaNPkknmA4sPNb2ki46fLtKJc2OigjTEMS/NJ7nYbbYHRaro804MlF563R3WVXVat8TTXPpGuHiDO2huRm6dSESSnKr39zpYNhmp9Mz7ON8rJAig4IoKlIqFWcl6tTzhUJS2HljqLqne+yd0m3P9jxW3ebNraIvf+37rfaOn//pyuTQrh86dxgMleSTWiw+enllRcNIW52J5482jV1/+3DzjMdIe37uKq8d8fM/Xrb2FR5pzwnMbdpbl7G9tGnl+s+qwwPx9Qerw0vODtTWmXj+0IWhJgNdSQGAEAAKyluWZs1JyLc77jo7uoaLvn4zsxEAio63L9PFqnbFRYUvkMrEQpPJbtFoWk8mz4zKGx2bqvvYkLZG8U3zOnloyLm0lOiFZuusj6qATwgA0OtUW6QhYqqvb+zMF+vmngKA94+1v5ozL/H79NSYbCfDWvv6zW3iIJJcME+/IXlmpFYmC7YDQMm7C4d7ekdLeZ5HdKRyFU3TBLGi+LRMpVJkuxg31907UgYABrqSSkyM+DQ8XKbquGa8cL6ufe5bz0XOq2/sXiogSAYAOJ/Pfv8aenpvlg8NW2/r4lSpVs2SJYQ+JWp5pFahvmOaullWkFMPAEn6Gfkz9BFzLOMOW3fXnYKKgsVjALB/04K/xiftLQDg8XAPTKvo1R6Xy3tdLBYSitCQVEIeItGSBAGPhxsABDwAqDXyLJIkYDROnDu4Pedq4HD8frAA4GK9tkDcc6/yIIlITogpkRwAvJzvAYkSUREAYLMx/Y++EpIkQgGAdXnsgbhISCoBwM1yDsLn87sBgCQEovsE3u8nAcAv4McDhQa6kgqiRPFerw+sx/1gTbd82xitDA3OdDjuei0m20WCcXpsAECQ/5wEAAzDjgNAqEySHGiq1yVtjI8PT+T9PMBx3vt4nFpZHKkN0/YbrfVlhc+3EqMj9vMTNoaVhohnG3ZUSgDAwbiv+P084uLVy4uOtL0AAAWHL2WnpcUUGI3jrIgSIixMngkAH5zo2JqeEZNvm2KZocHxr4B7u3/44nBTSlLUwvO114t2r03fl0vXBK3JTaqflRIzf2LCOWWdZAbUSqme43y+hubeMyuWZebb7OyEddw5Eh+nTOW8fu5Sa98ees3sPQBAAkDmy/myBJ3mFVJIxmrT8n45uXPRZEL22nrW5YnmOJ9SJBQET0wyN272mj5sGZzaJ/ZxakKACJIkpGazo/1q1zC9+7X00ocmmkvXCA/c2+GD1caabSUNUY9O/X/FtpJLCRUNo9fqTDx/pHHs6s7jHRsBftr/FgA2fF6jK/yuZdV0uYdEmw80xKUmR1dkzIpdDAD9g+ZOh9N9mXF5Bjkv5wIPjSRYpJCGSBK1EfJnxizOP7e+GL30qaYAQNM04dbnvREbq1yrUsqyIjRyhUDwMI3jfDBb7Lf7ByynduYlv/efpoHx+t4/NOow9XK5TKQUUyK5h/MzrNvrYOx3B91XyLPl5fO90+n+Bnj1JdCPjO1wAAAAAElFTkSuQmCC"/>
+                                {{ag.email}}</a> </td>
+                              <td>{{ag.passcode}}</td>
+                              <!--<td>{{ag.user.login_date}}</td>-->
+                              <td>{{ag.type.app_user_type}}</td>
+                              <td>
+                                <span ng-if="myAccessType.can_edit_users" class="badge bg-primary" data-toggle="modal" data-target="#editModal" ng-click="selectUserToEdit(ag)">edit</span>
+                                  <span ng-if="myAccessType.can_edit_users && ag.name != 'Master Account'" class="badge bg-warning" ng-confirm-click="removeData(ag.url, ag.name, ag.email)" ng-confirm-message="You are about to remove the user.">remove</span>
+                                </td>
+                            </tr>
+                         
+                        </tbody>
+                      </table>
+                      <!-- <a class="btn btn-block btn-default btn-xs" ng-click="loadMore()">More..</a> -->
+        
+        
+                <!-- <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Add Access Type</button>
+                </div> -->
+    
+            </div>
+            
+    </div>
+    </div>
+    
+    
+    
+    </div>
+  
+  
+  
+    <!-- Syndics Modal -->
+  <div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+  
+  
+        <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Edit User</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">                 
+  
+                  <div class="form-group">
+                    <label for="locationname">Name</label>
+                    <input ng-model="usertordit.name" type="text" class="form-control" id="locationname" placeholder="Enter name">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Email Address</label>
+                    <input ng-model="usertordit.email" type="email" class="form-control" id="email" placeholder="Enter email">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input ng-model="usertordit.phone" type="text" class="form-control" id="phone" placeholder="Enter phone">
+                  </div>
+  
+                  <div class="form-group">
+                    <label for="personname">ID/Passport Number</label>
+                    <input ng-model="usertordit.id_passport_number" type="text" class="form-control" id="passport" placeholder="Enter ID or Passport Number">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Vehicle Number</label>
+                    <input ng-model="usertordit.vehicle_number" type="text" class="form-control" id="vehicle" placeholder="Enter Vehicle Number">
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Address</label>
+                    <textarea ng-model="usertordit.address" type="text" class="form-control" id="address" placeholder="Enter Address"></textarea>
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Passcode</label>
+                    <input ng-model="usertordit.passcode" type="text" class="form-control" id="address" placeholder="Enter Passcode">
+                  </div>
+  
+                  <!-- <div class="form-group">
+                    <label>Select user type</label>
+                    <select class="custom-select" ng-model="usertordit.usertype">
+                      <option ng-repeat="ut in appusertypes" value="{{ut.url}}">{{ut.app_user_type}}</option>
+                    </select>
+                  </div> -->
+  
+                  <!-- <div class="form-group">
+                    <label>Select user access type</label> 
+                    <select class="custom-select" ng-model="usertordit.accesstype">
+                      <option ng-repeat="at in accesstypes" value="{{at.url}}">{{at.access_type}}</option>
+                    </select>
+                  </div> -->
+
+                  <!-- <div class="form-group">
+                    <label>Select Location</label>
+                    <select class="custom-select" ng-change="selectAreasByResidence(searchresidence)" ng-model="searchresidence">
+                      <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+                    </select>
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Select user area</label>
+                    <select class="custom-select" ng-model="usertordit.user.residence_area">
+                      <option ng-repeat="at in areas" value="{{at.url}}">{{at.area_name}}</option>
+                    </select>
+                  </div> -->
+
+
+
+
+
+
+
+                  <div class="card card-secondary">
+                    <div class="card-header">
+                      <h3 class="card-title">Assign user locations</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">    
+
+
+ <div class="form-group">
+                    <label>Select Location</label>
+                    <select class="custom-select" ng-change="selectAreasByResidence(usertordit.residence)" ng-model="usertordit.residence">
+                      <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+                    </select>
+                  </div> 
+  
+                  <div class="form-group">
+                    <label>Select user area</label>
+                    <select class="custom-select" ng-model="usertordit.residence_area">
+                      <option ng-repeat="at in accountareas" value="{{at.area.url}}">{{at.area.area_name}}</option>
+                    </select>
+                  </div>
+  
+                  <!-- <div class="form-group">
+                    <label>Select Location</label>
+                    <select class="custom-select" ng-change="selectAreasByResidence(searchresidence)" ng-model="searchresidence">
+                      <option ng-repeat="at in residences" value="{{at.url}}">{{at.name}}</option>
+                    </select>
+                  </div>
+  
+                  <div class="form-group">
+                    <label>Select Location area</label>
+                    <select class="custom-select" ng-model="area">
+                      <option ng-repeat="ar in areas" value="{{ar.url}}">{{ar.area_name}} </option>
+                    </select> -->
+                    <!-- <div ng-repeat="sa in areas" style="padding: 5px 10px; border: 1px solid #ddd;" ng-click="assignArea(sa)">{{sa.area_name}} <img style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACdElEQVRIibWVv0/TURTFP/f1F2D4sRhhcAUHh0oFook/+K0k6KASAsRIjBuDf4CYRkycHXQwmi4ikcHBQQUSCsaoEIvoBI46ILhIjbZA+66DFintt1CCZ3v33HPOe3l59wlbwB8Olbmst9liqsSwD0AtixjmTMI1FmnuWM6lFyeienwwgJogoq2Ax6FtFWFErAlGGjtnthVw5PVw4Uo8cQe4lGsDm2AFCRVLvG+ivjfuGFATHi5PsvYUlZptGqdBYdprOTPV1LWYEXAyHCpYVt+kQO1OzDcgIj+Lj0fa238BuFPVqPru5jK/VlVLsfvPVXxfW+HWp3dOrQFb9OM2cGX9BP7woN+oRADjpHp57Dx7NgQ0vnqS6xQKWjPT0B0xAMaagVzmO4CAXAcwgbHhUkRbdtE8hdP+cKjMqCvRCnj/Q4BHKGhyq0qliKYx/Qdqadi7P61W5P731ko9PsLHzqXx49++MDA3nVYTtZVuEa3YHF3q9lHidj6UQAZf5vFlaTQVBlQzmd2BqKpBZGEzEbOJvM1iyayaBakef9QBPN7KIM93AICKXDCSdI8Aq/ntd1tY8caSoybS3LGMMLLb7oK8mGrriRoAVdMP2F30t6jcgL/D7n1D54fA+FBI0ctOitGlz2nDLjfkfuoDWp+mxRLvi6rvIFCXTXJzfjpbORsivgLX1dRifcBN1PfGPZazCtt2yoS8Tawl2t4c7YhlBABMNXUtlsrKCUEekN+dWJB7JRKv/9h6cSkt0klxeHLokE1qEDiF8zBcFeR5Umxwtr57NlvDlp963bOHJauFrhZRWylIOYCiXxWZ98bt2FRbTzSX/jdeLtfCBzbDYAAAAABJRU5ErkJggg=="/></div> -->
+
+                  <!-- </div> -->
+
+                  <!-- <p style="text-align: center; padding: 10px 10px 0px 10px;">Or you can search for areas</p>
+
+                  <input type="text" class="form-control" placeholder="Search for an area.." ng-model="query" ng-change="searchForArea(query)">
+
+
+                  <div ng-repeat="sa in searchedAreas" style="padding: 5px 10px; border: 1px solid #ddd;" ng-click="assignArea(sa)">{{sa.area_name}} <img style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACdElEQVRIibWVv0/TURTFP/f1F2D4sRhhcAUHh0oFook/+K0k6KASAsRIjBuDf4CYRkycHXQwmi4ikcHBQQUSCsaoEIvoBI46ILhIjbZA+66DFintt1CCZ3v33HPOe3l59wlbwB8Olbmst9liqsSwD0AtixjmTMI1FmnuWM6lFyeienwwgJogoq2Ax6FtFWFErAlGGjtnthVw5PVw4Uo8cQe4lGsDm2AFCRVLvG+ivjfuGFATHi5PsvYUlZptGqdBYdprOTPV1LWYEXAyHCpYVt+kQO1OzDcgIj+Lj0fa238BuFPVqPru5jK/VlVLsfvPVXxfW+HWp3dOrQFb9OM2cGX9BP7woN+oRADjpHp57Dx7NgQ0vnqS6xQKWjPT0B0xAMaagVzmO4CAXAcwgbHhUkRbdtE8hdP+cKjMqCvRCnj/Q4BHKGhyq0qliKYx/Qdqadi7P61W5P731ko9PsLHzqXx49++MDA3nVYTtZVuEa3YHF3q9lHidj6UQAZf5vFlaTQVBlQzmd2BqKpBZGEzEbOJvM1iyayaBakef9QBPN7KIM93AICKXDCSdI8Aq/ntd1tY8caSoybS3LGMMLLb7oK8mGrriRoAVdMP2F30t6jcgL/D7n1D54fA+FBI0ctOitGlz2nDLjfkfuoDWp+mxRLvi6rvIFCXTXJzfjpbORsivgLX1dRifcBN1PfGPZazCtt2yoS8Tawl2t4c7YhlBABMNXUtlsrKCUEekN+dWJB7JRKv/9h6cSkt0klxeHLokE1qEDiF8zBcFeR5Umxwtr57NlvDlp963bOHJauFrhZRWylIOYCiXxWZ98bt2FRbTzSX/jdeLtfCBzbDYAAAAABJRU5ErkJggg=="/></div>
+
+
+                  <p ng-if="finalAreas.length>0" style="text-align: center; padding: 20px 10px 0px 10px; font-weight: 700;">Assigned areas</p>
+
+                  <div ng-repeat="sa in finalAreas track by $index" style="padding: 5px 10px; border: 1px solid #ddd;">{{sa.name}} <img ng-click="removeArea(sa)" style="float: right;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAACKUlEQVRIibWVz0vTcRjHX8/HbZpKC4LSIMqZdq3EuvUDKsuD7bIuQQ6CTgb+A8WovyCoDmPpIjzEDooezLzYzYRF3YqIJR1MocNWmvtu+zxddMzpptOv79vneZ7P6/3A58PzCNsoFQwfMpZrip7GcBQAy6KIfsn7GqbbE9F0tftSKTEf7O9SSwShB/BWKHMUpsSayMmJ4Y87MvgZCh0oOI3PgXC1BspkUYY1IwNtM/HVigap3nALPh0XpXuH4PJu5wrq7QuMxxY3GaQuhxuMX98rnN8NvERJn62/eGwiugJgik5+feECHKDLMdmnRS5AKhg+I6rJUsM9SkXoPjH2KmkAxOoTF+FrSB4ByPfQfX+dk10CfC4aAORU5Ijx5LI9+wAH8Bq1Vz1q6Sz/7Ycf3KPxwrmaaCuzSX4/G9oQU+j0INIKuiFhmpswzU01GWxZL9JqQHVzxiWpqgdYKI/bP8vYv8s1sbaqV5UFmQ/231blza67rCJBQybvrZ8CnH3gZx2n8M60J6JphSm36SLytmNyJGMA1NQ9BKyLfKsFeQxr4yEwOvQZZdgtuiqx9QVUnD+akQGQDy7wk576lcH1Q9GgbSa+atVzS2BuD/DZvLG9xxOJf5sMAALjsUWblksoL6ntTawqUU3LlVOjr5dKExV37o++u2dVJCJwg8rD0BGRSQuRtrH4p60Ktl3q327eOejz1V1X6ARa1sK/EPmay+anOyZHMtXu/wdrdsgguBExOAAAAABJRU5ErkJggg=="/></div> -->
+
+
+                  </div>
+                  </div>
+
+
+
+
+
+  
+    
+              </div>
+    
+    
+            <div class="card-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" ng-click="saveEditedUser(usertordit)">Save</button>
+            </div>
+        </div>
+      </div></div></div></div>

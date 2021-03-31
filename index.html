@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AccessOne | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <script type="text/javascript">
+      window.paceOptions = {
+          document: true, // disabled
+          eventLag: true,
+          restartOnPushState: true,
+          restartOnRequestAfter: true,
+          ajax: {
+              trackMethods: [ 'POST','GET']
+          }
+      };      
+    </script>
+
+<style>
+  .pace {
+-webkit-pointer-events: none;
+pointer-events: none;
+
+-webkit-user-select: none;
+-moz-user-select: none;
+user-select: none;
+}
+
+.pace-inactive {
+display: none;
+}
+
+.pace .pace-progress {
+background: #29d;
+position: fixed;
+z-index: 2000;
+top: 0;
+right: 100%;
+width: 100%;
+height: 2px;
+}
+</style>
+
+    <script src="/dist/js/pace.min.js"></script>
+    <!-- <link href="/dist/css/pace.css" rel="stylesheet" /> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.js"></script>
+    <script src="https://rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.js"></script>
+    <link href="https://rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.2.0/ng-tags-input.min.js" integrity="sha512-pOR09ff/vusKS0jvxPr+LvHlpoKhY6TFS8MZS755ZXkosj70iDJ032ivJA0G+ZCe7dheEeBcHQL3SUY4cejiwg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-tags-input/3.2.0/ng-tags-input.css" integrity="sha512-5bXEiPRaymBieTz/jqH2jzvPQcNsIv2REoniFhCJ5tBYy8hVtb666zlCYclEhBYTd4Hmk8nL0OjWVXrVKKJTtQ==" crossorigin="anonymous" />
+  <script src="./angular-scripts.js"></script>
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-socialshare/2.3.11/angular-socialshare.min.js" integrity="sha512-XQfHaCMt8HKKuEdrD3G15N/WuXNkOfj6KN/ia7kiSi2GiqY+Ab71kDZPrbhvgu98yVXTkx/yukB0sd8ugmmYYQ==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/dist/css/angular-responsive-tables.min.css">
+    <script type="text/javascript" src="/dist/js/angular-responsive-tables.min.js"></script>
+ 
+  
+  <style type="text/css">
+  .bgdiv {
+    position: absolute;
+    z-index: -1;
+  }
+  img.bg {
+    /* Set rules to fill background */
+    min-height: 100%;
+    min-width: 1024px;
+    
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
+    
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  @media screen and (max-width: 1024px) { /* Specific to this particular image */
+    img.bg {
+      left: 50%;
+      margin-left: -512px;   /* 50% */
+    }
+  }
+  </style>  
+  
+  
+
+
+  </head>
+  <body class="login-page" style="min-height: 512.391px;" ng-app="myApp" ng-controller="accessCtrl">    
+  <div class="bgdiv"><img src="./img/login-back-full.jpg" id="bg"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="./img/accessone-black-nobackgound.png" width="320">
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+  
+        <!-- <form action="../../index3.html" method="post"> -->
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" ng-model="email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" ng-model="password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <!-- <div class="icheck-primary">
+                <input type="checkbox" id="remember">
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div> -->
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block" ng-click="login(email, password)">Sign In</button>
+            </div>
+            <!-- /.col -->
+          </div>
+          <div style="height: 30px;"></div>
+          <div class="row">
+            <div class="col-2">
+              <!-- <div class="icheck-primary">
+                <input type="checkbox" id="remember">
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div> -->
+            </div>
+            <!-- /.col -->
+            <div class="col-8">
+              <a class="btn btn-link btn-block" data-toggle="modal" data-target="#myModal">Forgot password</a>
+            </div>
+            <!-- /.col -->
+          </div>
+        <!-- </form> -->
+  
+        <!-- <div class="social-auth-links text-center mb-3">
+          <p>- OR -</p>
+          <a href="#" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+          </a>
+          <a href="#" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          </a>
+        </div> -->
+        <!-- /.social-auth-links -->
+  
+        <p class="mb-1">
+          <!-- <a href="forgot-password.html">I forgot my password</a> -->
+        </p>
+        <p class="mb-0" style="text-align: center; padding-top: 30px;">
+          <!-- <a href="register.html" class="text-center">Register a new membership</a> -->
+        </p>
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+  <!-- /.login-box -->
+  
+  <!-- jQuery -->
+  <!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
+  <!-- Bootstrap 4 -->
+  <!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+  <!-- AdminLTE App -->
+  <!-- <script src="../../dist/js/adminlte.min.js"></script> -->
+
+
+  <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+      <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Forgot password</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            
+          
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input ng-model="recoverName" type="text" class="form-control" id="name" placeholder="Enter your name">
+              </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input ng-model="recoverEmail" type="email" class="form-control" id="email" placeholder="Enter your email">
+          </div>
+
+         
+  
+  
+          <div class="card-footer">
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+            <button type="submit" class="btn btn-primary" ng-click="recoverPass()">Recover Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+  </body></html>
+
+
+
+
+  

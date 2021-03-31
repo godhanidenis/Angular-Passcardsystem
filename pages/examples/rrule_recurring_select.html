@@ -1,0 +1,127 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        {{changeVar}}
+        <div class="card card-widget widget-user-2">
+          <form name="myForm">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Select login access recurrance</h3>
+              
+            </div>
+            <div class="card-body">
+                <div class="rrule-recurring-select">
+
+                    <div class="form-group row">
+                        <input ng-model="parent.timeFrom" name="timeFrom" class="form-control col-md-6" type="time" placeholder="HH:mm:ss"
+                            ng-max="parent.timeTo">
+                        <input ng-model="parent.timeTo" name="timeTo" class="form-control col-md-6" type="time" placeholder="HH:mm:ss"
+                            ng-min="parent.timeFrom">
+                    </div>
+                    <div class="form-group row">
+                        <input ng-model="parent.dateFrom" name="dateFrom" class="form-control col-md-6" placeholder="Date from"
+                            moment-picker="stringDateFrom" locale="fr" is_utc=true format="YYYY-MM-DD HH:mm" start-view="month"
+                            min-date="minDateMoment" ng-model-options="{ updateOn: 'blur' }" change="onChange(newValue, oldValue)">
+                        <input ng-model="parent.dateTo" class="form-control col-md-6" placeholder="Date to" moment-picker="stringDateTo"
+                            locale="fr" is_utc=true format="YYYY-MM-DD HH:mm" start-view="month" min-date="parent.dateFrom"
+                            ng-model-options="{ updateOn: 'blur' }" change="onChange(newValue, oldValue)">
+                    </div>
+                    <div class="form-group row">
+                        <div class="frequency-type col-md-4">
+                            <select ng-model="selectedFrequency" class="form-control"
+                                ng-options="frequency as frequency.name for frequency in frequencies" ng-change="changeRecurranceFrequency()">
+                            </select>
+                        </div>
+                        <div class="interval col-md-8 d-flex align-items-center">
+                            <p style="margin:0 5px;padding:0">Every</p> <input type="text" ng-model="interval" class="form-control"
+                                ng-change="calculateRRule()" />
+                            <p style="margin:0 5px;padding:0">{{selectedFrequency.type}}(s):</p>
+                        </div>
+                    </div>
+                    <div class="weekly" ng-if="selectedFrequency.type == 'week'">
+                        <ul>
+                            <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
+                                {{day.name}}
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == 'month'">
+                        <!-- <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_month')"
+                            value="day_of_month" />Day of month -->
+                        <!-- update 1/16/2016 from Matt DuBois: the Monthly - Day of Week rule is broken and sets the recurrence to Monthly- Day of Month on the 15th <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week -->
+                
+                        <ul class="month-days">
+                            <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }"
+                                ng-if="selectedMonthFrequency == 'day_of_month'">
+                                {{day.day}}
+                            </li>
+                        </ul>
+                
+                        <ul class="month-week-days">
+                            <li ng-repeat="week in monthWeeklyDays" ng-if="selectedMonthFrequency == 'day_of_week'">
+                                <ul class="week-days">
+                                    <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>
+                                    <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
+                                        {{ day.name }}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <div class="yearly" ng-if="selectedFrequency.type == 'year'">
+                        <label for="yearMonth">Months: </label>
+                        <ul class='year-months'>
+                            <li ng-repeat="yearMonth in yearMonths" class="year-month">
+                                <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected"
+                                    ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">
+                                <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>
+                            </li>
+                        </ul>
+                        <!-- <select name="yearMonth" ng-model="selectedYearMonth" ng-options="yearMonth as yearMonth.name for yearMonth in yearMonths track by yearMonth.value" ng-change="calculateRRule()" required></select> -->
+                        <br />
+                        <label for="yearMonthDay">Day of Month: </label>
+                        <ul class='year-month-days'>
+                            <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">
+                                <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected"
+                                    ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">
+                                <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- myForm.input.$valid = {{parent.timeFrom}}
+                    <br />
+                    myForm.input.$valid = {{parent.timeTo}}
+                    <br />
+                    myForm.input.$valid = {{myForm.input1.$valid}}
+                    <br />
+                    myForm.input.$valid = {{myForm.input2.$valid}}
+                    <br />
+                    {{ currentDate }}
+                    <br />
+                    {{ currentDate >= parent.timeFrom }} -->
+                
+                    <hr />
+                    <div class="summary">
+                        Summary: {{selectedFrequency.name}}
+                        <div class="description">
+                            {{ recurrenceRule.toText() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid" ng-click="approveResident()">Approve</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click='resetForm()'>Close</button>
+            <!-- ng-click="setConnectionStatus(con.url, 'approve', con.email, con.passcode, con.push_id, con)" -->
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+

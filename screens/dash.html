@@ -1,0 +1,304 @@
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">App Connection Request</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table class="table wt-responsive-table table-bordered">
+          <thead>                  
+            <tr>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Area</th>
+              <th>Passcode</th>
+              <!-- <th>Type</th> -->
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="con in connections | orderBy: '-connection.url'" ng-if="con.connection.status=='PENDING'">
+              <td>{{con.connection.name}}</td>
+              <td>Phone: <a href="tel:{{con.connection.phone}}">{{con.connection.phone}}</a>  <br> Email: <a href="mailto:{{con.connection.email}}">{{con.connection.email}}</a> </td>
+              <td><b>{{con.residence.name}}</b><br>{{con.area.area_name}}</td>
+              <td>{{con.connection.passcode}}</td>
+              <!-- <td><span class="badge bg-warning">{{con.statusName}}</span></td> -->
+              <td>
+
+                <!-- <button type="button" class="btn btn-block btn-primary btn-xs" data-toggle="modal" data-target="#modal-sm">
+                    Actions
+                  </button> -->
+
+
+                  <div class="form-group">
+                    <div class="custom-control custom-switch" ng-click="connectionApprove(con.connection.url, con.connection.email, con.connection.passcode, con.connection.push_id, con)">
+                      <input type="checkbox" class="custom-control-input" id="{{con.connection.url}}">
+                      <label class="custom-control-label" for="{{con.connection.url}}">Approve</label>
+                    </div>
+                  </div>
+
+                
+            </td>
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">IN and OUT</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <!-- <table class="table table-bordered">
+          <thead>                  
+            <tr>
+              <th>Visitor</th>
+              <th>Resident</th>
+              <th>Timestamps</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="con in inout | limitTo: limit" ng-if="con.status=='Check out' || con.status=='Check in'">
+              <td>{{con.connection.name}}</td>
+              <td>{{con.resident.name}}<br>Phone: <a href="tel:{{con.resident.phone}}">{{con.resident.phone}}</a></td>
+              <td>
+                In: {{con.connection.checkin_date}}<br>Out: {{con.connection.checkout_date}}
+              </td>
+              <td>
+                <span ng-if="con.status=='Check in'" class="badge bg-success">{{con.status}}</span>
+                <span ng-if="con.status=='Check out'" class="badge bg-warning">{{con.status}}</span>
+              </td>
+            </tr>
+
+            
+           
+          </tbody>
+        </table> -->
+
+        <table class="table table-bordered monitortable">
+          <thead>                  
+            <tr>
+              <th>Guest Name</th>
+                        <!-- <th width="200px">Validity</th> -->
+                        <th>Timestamps</th>
+                        <!-- <th>Subscriber</th> -->
+                        <th>Area</th>
+                        <th width="90px">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+              <!-- <td><input ng-model="searchtxt.inout_pass.name" type="text" class="form-control" placeholder="Filter"></td> -->
+                  <!-- <td> -->
+                    <!-- <input ng-model="searchtxt.connection.timedate" type="text" class="form-control" placeholder="Filter"> -->
+                  <!-- </td> -->
+                  <!-- <td></td> -->
+                  <!-- <td><select ng-model="searchtxt.inout_pass.visitor_type.visitor_type" class="custom-select">
+                      <option ng-value="vt.visitor_type" ng-repeat="vt in visitortypes">{{vt.visitor_type}}</option>
+                    </select></td> -->
+                    <!-- <td></td> -->
+                  <!-- <td> -->
+                    <!-- <input ng-model="searchtxt.resident.name" type="text" class="form-control" placeholder="Filter"> -->
+                  <!-- </td> -->
+                  <!-- <td><input ng-model="searchtxt.inout_pass.visitor_area.area_name" type="text" class="form-control" placeholder="Filter"></td>
+                  <td> -->
+                    <!-- <input ng-model="searchtxt.checkin_agent.name" type="text" class="form-control" placeholder="Filter"> -->
+                    <!-- </td> -->
+                  <!-- <td><input ng-model="searchtxt.inout_status.name" type="text" class="form-control" placeholder="Filter"></td> -->
+                  
+                  <tr ng-style="(vi.override) && {'background-color':'#ebe7c5'} || {'background-color': 'white'}" ng-repeat="vi in inouts | orderBy:['-inout_pass.checkin_date', '-inout_pass.checkout_date']" ng-if="vi.inout_status.name=='Check out' || vi.inout_status.name=='Check in'">
+                    <td><p><span style="font-weight: 900; text-transform: uppercase;">{{vi.inout_pass.name}}</span></p><p>
+                      <!-- <a class="badge badge-primary" style="color: #fff;" ng-click="setConToView(vi)" data-toggle="modal" data-target="#viewConModal">View</a></p> -->
+                    </td>
+                    <td>
+                      <span ng-if="vi.inout_checkin_agent != null">{{vi.checkin_date | date :  "dd.MM.y HH:mm"}}</span>
+                      <span ng-if="vi.inout_checkin_agent == null">{{vi.checkout_date | date :  "dd.MM.y HH:mm"}}</span>
+                    </td>
+
+
+                      
+
+
+
+                    <!-- <td>{{vi.connection.number_of_guests}}</td> -->
+                    <!-- <td>{{vi.inout_pass.visitor_type.visitor_type}}</td> -->
+
+                    <!-- <td>
+                      <span ng-if="vi.checkout_agent != null">{{vi.checkout_date | date :  "dd.MM.y HH:mm"}}</span>
+                      <span ng-if="vi.checkout_agent == null">{{vi.checkin_date | date :  "dd.MM.y HH:mm"}}</span>
+                    </td> -->
+
+
+
+                    <!-- <td ng-if="vi.inout_pass.user != null"><p><span style="font-weight: 900; text-transform: uppercase;">{{vi.inout_pass.visitor_user.name}}</span> / <a href="tel:{{vi.inout_pass.visitor_user.phone}}">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC"/> 
+                      {{vi.inout_pass.visitor_user.phone}}</a></p>
+                    <p><a href="mailto:{{vi.inout_pass.visitor_user.email}}">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAAE7ElEQVQ4jZ1Ua0xTZxh+ek57SqEXKG0p91JQLgoK6iZscSwzczpjgqaaTCduOmecLkgGm5vZTqK7amYc4oQwdcZlGZg53X5sioLAAAeC4AW5KFAQSlsuvZwe25727MfUVUWX7P35vM/zfO/7vd/7CfCUWFF8WpaUHJUnlQapJZRI4fL4nSzDWkw25vcTOxaNPkknmA4sPNb2ki46fLtKJc2OigjTEMS/NJ7nYbbYHRaro804MlF563R3WVXVat8TTXPpGuHiDO2huRm6dSESSnKr39zpYNhmp9Mz7ON8rJAig4IoKlIqFWcl6tTzhUJS2HljqLqne+yd0m3P9jxW3ebNraIvf+37rfaOn//pyuTQrh86dxgMleSTWiw+enllRcNIW52J5482jV1/+3DzjMdIe37uKq8d8fM/Xrb2FR5pzwnMbdpbl7G9tGnl+s+qwwPx9Qerw0vODtTWmXj+0IWhJgNdSQGAEAAKyluWZs1JyLc77jo7uoaLvn4zsxEAio63L9PFqnbFRYUvkMrEQpPJbtFoWk8mz4zKGx2bqvvYkLZG8U3zOnloyLm0lOiFZuusj6qATwgA0OtUW6QhYqqvb+zMF+vmngKA94+1v5ozL/H79NSYbCfDWvv6zW3iIJJcME+/IXlmpFYmC7YDQMm7C4d7ekdLeZ5HdKRyFU3TBLGi+LRMpVJkuxg31907UgYABrqSSkyM+DQ8XKbquGa8cL6ufe5bz0XOq2/sXiogSAYAOJ/Pfv8aenpvlg8NW2/r4lSpVs2SJYQ+JWp5pFahvmOaullWkFMPAEn6Gfkz9BFzLOMOW3fXnYKKgsVjALB/04K/xiftLQDg8XAPTKvo1R6Xy3tdLBYSitCQVEIeItGSBAGPhxsABDwAqDXyLJIkYDROnDu4Pedq4HD8frAA4GK9tkDcc6/yIIlITogpkRwAvJzvAYkSUREAYLMx/Y++EpIkQgGAdXnsgbhISCoBwM1yDsLn87sBgCQEovsE3u8nAcAv4McDhQa6kgqiRPFerw+sx/1gTbd82xitDA3OdDjuei0m20WCcXpsAECQ/5wEAAzDjgNAqEySHGiq1yVtjI8PT+T9PMBx3vt4nFpZHKkN0/YbrfVlhc+3EqMj9vMTNoaVhohnG3ZUSgDAwbiv+P084uLVy4uOtL0AAAWHL2WnpcUUGI3jrIgSIixMngkAH5zo2JqeEZNvm2KZocHxr4B7u3/44nBTSlLUwvO114t2r03fl0vXBK3JTaqflRIzf2LCOWWdZAbUSqme43y+hubeMyuWZebb7OyEddw5Eh+nTOW8fu5Sa98ees3sPQBAAkDmy/myBJ3mFVJIxmrT8n45uXPRZEL22nrW5YnmOJ9SJBQET0wyN272mj5sGZzaJ/ZxakKACJIkpGazo/1q1zC9+7X00ocmmkvXCA/c2+GD1caabSUNUY9O/X/FtpJLCRUNo9fqTDx/pHHs6s7jHRsBftr/FgA2fF6jK/yuZdV0uYdEmw80xKUmR1dkzIpdDAD9g+ZOh9N9mXF5Bjkv5wIPjSRYpJCGSBK1EfJnxizOP7e+GL30qaYAQNM04dbnvREbq1yrUsqyIjRyhUDwMI3jfDBb7Lf7ByynduYlv/efpoHx+t4/NOow9XK5TKQUUyK5h/MzrNvrYOx3B91XyLPl5fO90+n+Bnj1JdCPjO1wAAAAAElFTkSuQmCC"/>
+                      {{vi.inout_pass.visitor_user.email}}</a></p>
+                    </td>
+
+
+                    <td ng-if="vi.inout_pass.resident != null"><p><span style="font-weight: 900; text-transform: uppercase;">{{vi.inout_pass.visitor_resident.name}}</span> / <a href="tel:{{vi.inout_pass.visitor_resident.phone}}">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAACEElEQVQ4jdXUT0jTYRzH8fd3+21rPzF1lbr5h5LIDlG5/pibRF6CDhWIHqIIYpTUQehY1K3o5LHAEsOgQ1LQoa4pZNrEwoqkIBlMsPKgSbG1+m3fDu431l/cOkSf0/M834fX8/z4Pc8D/0skvxPo7TVxmnshfRAV00wuHn3T3Z0qFDXsRvOjZx2p5Mfzc7HpzfZaSW/5ONBTKOqwGyoacZeUbjJcnlxR0bP1V25WFI2KyoCoOlauXpNf91ku60zRqPfL/G0gZvpWqcuzIn9OsGh0uK3NUvScgFT4A1Z2+DXO9LFC0e/+PqrSPDY5DLL7w/vZVGL+bcNMJDJb9E6XlhDFoSeBRFmVX6o3BisLBX9Ggeiu4BRwWhC3Q+TetpGJ+r9GAaKhrVdVtQ+ocTmM+60Pnxd0rOR3hc7BQWe8dsMg0A5MWRlr35PW7XGAQH9/HZZzAGHC+Gpcip86vLAsFKBldNSbxrwlsB9lJoMeePfq6Vw6YzwAGrPT5kW56P28eNm+0r/8fDtjoVDSTC20q2ofQp0IUbOiOpYHAvhU6El4y27YA39EYen8joebjovqCUGs8uoad+XaBuuHCwKiiWWjdh6Hm67hyOxAGfGUlBpV6xvV568l91ao3M35y0VzUZWdY5OHBLkArAM0lfj0Ym76ZctsV1eiODSbPUNDRtLt60D0CCrXo+Etd4q1/l2+AaHDrRzfe0T4AAAAAElFTkSuQmCC"/> 
+                      {{vi.inout_pass.visitor_resident.phone}}</a></p>
+                    <p><a href="mailto:{{vi.inout_pass.visitor_resident.email}}">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAABmJLR0QA/wD/AP+gvaeTAAAE7ElEQVQ4jZ1Ua0xTZxh+ek57SqEXKG0p91JQLgoK6iZscSwzczpjgqaaTCduOmecLkgGm5vZTqK7amYc4oQwdcZlGZg53X5sioLAAAeC4AW5KFAQSlsuvZwe25727MfUVUWX7P35vM/zfO/7vd/7CfCUWFF8WpaUHJUnlQapJZRI4fL4nSzDWkw25vcTOxaNPkknmA4sPNb2ki46fLtKJc2OigjTEMS/NJ7nYbbYHRaro804MlF563R3WVXVat8TTXPpGuHiDO2huRm6dSESSnKr39zpYNhmp9Mz7ON8rJAig4IoKlIqFWcl6tTzhUJS2HljqLqne+yd0m3P9jxW3ebNraIvf+37rfaOn//pyuTQrh86dxgMleSTWiw+enllRcNIW52J5482jV1/+3DzjMdIe37uKq8d8fM/Xrb2FR5pzwnMbdpbl7G9tGnl+s+qwwPx9Qerw0vODtTWmXj+0IWhJgNdSQGAEAAKyluWZs1JyLc77jo7uoaLvn4zsxEAio63L9PFqnbFRYUvkMrEQpPJbtFoWk8mz4zKGx2bqvvYkLZG8U3zOnloyLm0lOiFZuusj6qATwgA0OtUW6QhYqqvb+zMF+vmngKA94+1v5ozL/H79NSYbCfDWvv6zW3iIJJcME+/IXlmpFYmC7YDQMm7C4d7ekdLeZ5HdKRyFU3TBLGi+LRMpVJkuxg31907UgYABrqSSkyM+DQ8XKbquGa8cL6ufe5bz0XOq2/sXiogSAYAOJ/Pfv8aenpvlg8NW2/r4lSpVs2SJYQ+JWp5pFahvmOaullWkFMPAEn6Gfkz9BFzLOMOW3fXnYKKgsVjALB/04K/xiftLQDg8XAPTKvo1R6Xy3tdLBYSitCQVEIeItGSBAGPhxsABDwAqDXyLJIkYDROnDu4Pedq4HD8frAA4GK9tkDcc6/yIIlITogpkRwAvJzvAYkSUREAYLMx/Y++EpIkQgGAdXnsgbhISCoBwM1yDsLn87sBgCQEovsE3u8nAcAv4McDhQa6kgqiRPFerw+sx/1gTbd82xitDA3OdDjuei0m20WCcXpsAECQ/5wEAAzDjgNAqEySHGiq1yVtjI8PT+T9PMBx3vt4nFpZHKkN0/YbrfVlhc+3EqMj9vMTNoaVhohnG3ZUSgDAwbiv+P084uLVy4uOtL0AAAWHL2WnpcUUGI3jrIgSIixMngkAH5zo2JqeEZNvm2KZocHxr4B7u3/44nBTSlLUwvO114t2r03fl0vXBK3JTaqflRIzf2LCOWWdZAbUSqme43y+hubeMyuWZebb7OyEddw5Eh+nTOW8fu5Sa98ees3sPQBAAkDmy/myBJ3mFVJIxmrT8n45uXPRZEL22nrW5YnmOJ9SJBQET0wyN272mj5sGZzaJ/ZxakKACJIkpGazo/1q1zC9+7X00ocmmkvXCA/c2+GD1caabSUNUY9O/X/FtpJLCRUNo9fqTDx/pHHs6s7jHRsBftr/FgA2fF6jK/yuZdV0uYdEmw80xKUmR1dkzIpdDAD9g+ZOh9N9mXF5Bjkv5wIPjSRYpJCGSBK1EfJnxizOP7e+GL30qaYAQNM04dbnvREbq1yrUsqyIjRyhUDwMI3jfDBb7Lf7ByynduYlv/efpoHx+t4/NOow9XK5TKQUUyK5h/MzrNvrYOx3B91XyLPl5fO90+n+Bnj1JdCPjO1wAAAAAElFTkSuQmCC"/>
+                      {{vi.inout_pass.visitor_resident.email}}</a></p>
+                    </td> -->
+
+
+
+                    <td>
+                      <!-- <p><span style="font-weight: 900; text-transform: uppercase;">
+                      {{vi.resdat.name}}</span></p> -->
+                      <p>{{vi.inout_pass.visitor_area.area_name}}</p></td>
+                    <!-- <td>
+                      
+                      <span ng-if="vi.inout_checkout_agent.passcode != null"><span style="font-weight: 900; text-transform: uppercase;">{{vi.inout_checkout_agent.name}}</span><br>{{vi.inout_checkout_agent.passcode}}</span>
+                      <span ng-if="vi.inout_checkout_agent.passcode == null"><span style="font-weight: 900; text-transform: uppercase;">{{vi.inout_checkin_agent.name}}</span><br>{{vi.inout_checkin_agent.passcode}}</span> -->
+
+                    <td>
+                      <span class="badge badge-default" style="font-size: 18px;" ng-if="vi.inout_checkout_agent.passcode != null">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABv0lEQVQ4jY2Sv2tTcRTFP/ebl4RKsT9AaFI02HRQIjh0FcHFWFP8DxxcKg4muArKs4KrKLp0Kx2dFGlrtq5CJ0kXadJ0qHFJ6u/40nyvQ9LXx+tL8Gz3cu75nnPvVwih4uYS4/bvvGDzqpwFwLCHmvKBSa7n3IoX5EuwaLgzC9bqC5CZsHAfO2Ioptzq2gmB/UfZIqLPATNg+AhWVUvTT2uvfIHey7z9j2FfRJCF1NLOulTcXGLC/tkGsmGWxOKoPQTVKJFay4xcMBO0b0YNj1wqcObBJvHpy4NcnB+3v/MOVq8Hu7HJc4wVnpCcvdp3kRiSRPIOSuZolaNX7jJ6rYQ4SZ8ydusZ6v06Dt/+TnPldq9QMgbhOGDMIXTZoTCCOirUpS/xc/M17U/vOV1w/Qjf3j3Eq3+MFLCwZ1BTDjYPm3Waq3c4eFOk++Mr2vUihwFihg3Rxbl4Y6q1rTAbJgw/o1Zb5tRFI8tbHQylnqMQpdsZ9Ae6GO7l3IpnAFJudU1VI0UiYAUtpd1aGUIr//I4Ow/6MipOH5/B3k8v7X7wY56wvTgX359q3gDJo2QAjJFdq7acbkxuyPJWJ8j/B0bVqA0JmHvzAAAAAElFTkSuQmCC">
+                        OUT 
+                        
+                      </span>
+                      <span class="badge badge-success" style="font-size: 18px;" ng-if="vi.inout_checkout_agent.passcode == null">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABwElEQVQ4jYWRv09TcRTFP/fb11dNQQwDiQOpBURNtQ4UHBzcrK9hZnXWKPwNLs7+2NiMcWFrTNrSxdlYFkgbUysigyQlMQE0sa39Xgfa+vp81bPde88599zvVwggtVF1W+e6niBZLNMAIuxb0XLsOFKsrqTafr74i0ubO8tYngEzQeMePgm6WvfShX7DDMTFnVUs+X+IAWYVeTNf2n44lKC3Oe83/A+sqC7Xc+mipDaqbnvc1oDZIEsAxwgdq2Emn90Tc8V0xrq5MDFA+vxZ3t6+TO7CRNg42RrTrFEjd0bldI1hKubw9MY0r5aSzMRjgYg266Ak+vXLxYuMRyODeTzy50luTsbJ35rjRaPJ+u7hqV4lYYDQA8MggCNDDXUEvvQd7r3fGxIsTsZ5vZQE4N23HzyufaXxvTWYK7rvWNGyqDwI29i2lmbrF08+HFA4OPo7kZGSLFQq0ePDWA2YC408+ht33RNz1WxlMh1B1wAbZCiMEndVuV9dSbUNQN1LF0TCTUJgRWStkbte7qccYL6w7anI87BzepE+qsijhndt03/mEBYqlehR88xdxGZFJXGqkz2gPDH1s7SVyXT8/N8jqpvoQ6v3YgAAAABJRU5ErkJggg=="/>
+                        IN 
+                        
+                      </span>
+                    </td>
+                   
+                    <!-- <td><span ng-click="setConnection(vi)" class="badge bg-success" data-toggle="modal" data-target="#connectionModal">view</span> -->
+                        <!-- <span class="badge bg-warning">remove</span></td> -->
+                  </tr>
+           
+          </tbody>
+        </table>
+
+        <!-- <a class="btn btn-block btn-default btn-xs" ng-click="loadMore()">More..</a> -->
+      </div>
+      <!-- /.card-body -->
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+
+    <div class="row"> 
+
+      <div class="col-lg-6" style="padding-top: 20px; padding-bottom: 20px;">
+      <a href="#!users"><button style="height: 70px;" type="button" class="btn btn-block btn-primary btn-lg">
+        <svg style="position: absolute; left: 20px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M92.235,17.2c-15.38594,0 -26.66,6.07375 -32.5725,15.05c-1.20937,1.84094 -2.15,3.77594 -2.9025,5.805l-0.7525,-1.72c-0.57781,-1.19594 -1.78719,-1.94844 -3.1175,-1.935c-11.98625,0 -20.92219,4.82406 -25.585,12.04c-4.25969,6.57094 -4.47469,14.87531 -1.8275,22.575c-1.14219,1.57219 -1.935,3.48031 -1.6125,6.235c0.36281,3.10406 1.1825,5.40188 2.4725,7.095c0.55094,0.72563 1.34375,0.72563 2.0425,1.1825c0.45688,2.55313 1.11531,5.09281 2.15,7.2025c0.61813,1.26313 1.34375,2.35156 2.0425,3.3325c0.22844,0.3225 0.61813,0.56438 0.86,0.86c0.01344,2.71438 0,5.03906 -0.215,7.8475c-0.63156,1.59906 -2.10969,3.06375 -4.945,4.515c-2.9025,1.49156 -6.85312,2.84875 -10.8575,4.6225c-4.00437,1.77375 -8.14312,3.91031 -11.5025,7.4175c-3.35937,3.50719 -5.76469,8.37156 -6.1275,14.62c-0.05375,0.95406 0.28219,1.88125 0.92719,2.56656c0.65844,0.69875 1.55875,1.08844 2.51281,1.08844h21.715c-0.59125,2.06938 -1.03469,4.25969 -1.1825,6.665c-0.05375,0.95406 0.28219,1.88125 0.92719,2.56656c0.65844,0.69875 1.55875,1.08844 2.51281,1.08844h117.605c0.95406,0 1.85438,-0.38969 2.51281,-1.08844c0.645,-0.68531 0.98094,-1.6125 0.92719,-2.56656c-0.14781,-2.40531 -0.59125,-4.59562 -1.1825,-6.665h21.5c0.95406,0 1.85438,-0.38969 2.51281,-1.08844c0.645,-0.68531 0.98094,-1.6125 0.92719,-2.56656c-0.36281,-6.22156 -2.795,-11.03219 -6.1275,-14.5125c-3.3325,-3.48031 -7.4175,-5.65719 -11.395,-7.4175c-3.9775,-1.76031 -7.87437,-3.14437 -10.75,-4.6225c-2.74125,-1.41094 -4.17906,-2.86219 -4.8375,-4.4075c-0.215,-2.83531 -0.22844,-5.20031 -0.215,-7.955c0.215,-0.28219 0.645,-0.45687 0.86,-0.7525c0.68531,-0.98094 1.34375,-2.06937 1.935,-3.3325c0.9675,-2.0425 1.58563,-4.54187 2.0425,-6.9875c0.72563,-0.45687 1.57219,-0.5375 2.15,-1.29c1.29,-1.69312 2.00219,-4.00437 2.365,-7.095c0.22844,-1.935 0.09406,-3.64156 -0.5375,-5.16c-0.17469,-0.40312 -0.72562,-0.59125 -0.9675,-0.9675c0.71219,-1.70656 1.51844,-3.27875 1.72,-5.375c0.30906,-3.18469 0.14781,-6.82625 -0.7525,-10.32c-0.90031,-3.49375 -2.52625,-6.88 -5.2675,-9.5675c-2.20375,-2.16344 -5.30781,-3.45344 -8.815,-3.9775l-1.72,-3.7625c-0.55094,-1.23625 -1.77375,-2.02906 -3.1175,-2.0425c-4.74344,0 -9.55406,0.56438 -14.0825,1.935c-1.20937,-2.75469 -2.82187,-5.375 -5.0525,-7.525c-2.91594,-2.80844 -7.10844,-4.42094 -11.825,-4.945l-2.365,-4.73c-0.56437,-1.15562 -1.72,-1.90812 -3.01,-1.935zM90.1925,24.295l2.0425,4.085c0.56438,1.15563 1.72,1.90813 3.01,1.935c4.24625,0 7.10844,1.26313 9.3525,3.44c1.85438,1.78719 3.3325,4.21938 4.3,6.9875c0.02688,0.14781 0.06719,0.29563 0.1075,0.43c0.01344,0.02688 -0.01344,0.08063 0,0.1075c0.06719,0.41656 0.215,0.81969 0.43,1.1825c0.01344,0.02688 -0.01344,0.08063 0,0.1075c0.91375,3.49375 1.06156,7.33688 0.7525,10.535c-0.30906,3.19813 -1.31687,5.76469 -1.935,6.5575c-0.68531,0.86 -0.92719,2.00219 -0.61812,3.07719c0.29562,1.06156 1.08844,1.92156 2.12312,2.29781c0.02688,0.04031 -0.04031,0.02688 0,0.1075c0.18813,0.43 0.37625,1.33031 0.215,2.6875c-0.36281,3.03688 -1.10187,4.60906 -1.6125,5.2675c-0.51062,0.65844 -0.72562,0.5375 -0.645,0.5375c-1.62594,0.13438 -2.91594,1.3975 -3.1175,3.01c-0.28219,2.66063 -1.34375,5.92594 -2.58,8.4925c-0.61812,1.27656 -1.27656,2.45906 -1.8275,3.225c-0.55094,0.76594 -1.24969,1.1825 -0.86,0.9675c-1.11531,0.59125 -1.81406,1.74688 -1.8275,3.01c0,4.515 -0.14781,8.18344 0.3225,13.4375c0.04031,0.29563 0.1075,0.57781 0.215,0.86c1.80063,4.90469 6.00656,7.92813 10.535,10.2125c4.52844,2.28438 9.675,4.01781 14.5125,6.1275c4.8375,2.10969 9.23156,4.52844 12.47,7.8475c2.49938,2.56656 4.05813,6.02 4.945,10.2125h-109.005c0.90031,-4.1925 2.43219,-7.53844 4.945,-10.105c3.25188,-3.31906 7.72656,-5.84531 12.5775,-7.955c4.85094,-2.10969 9.97063,-3.84312 14.5125,-6.1275c4.54188,-2.28437 8.72094,-5.30781 10.535,-10.2125c0.1075,-0.28219 0.17469,-0.56437 0.215,-0.86c0.47031,-5.25406 0.3225,-8.9225 0.3225,-13.4375c-0.01344,-1.26312 -0.71219,-2.41875 -1.8275,-3.01c0.37625,0.20156 -0.29562,-0.18812 -0.86,-0.9675c-0.56437,-0.77937 -1.19594,-1.94844 -1.8275,-3.225c-1.27656,-2.56656 -2.40531,-5.85875 -2.6875,-8.4925c-0.20156,-1.6125 -1.49156,-2.87562 -3.1175,-3.01c0.08063,0 -0.13437,0.12094 -0.645,-0.5375c-0.51062,-0.65844 -1.24969,-2.23062 -1.6125,-5.2675c-0.29562,-2.49937 1.02125,-3.27875 0.7525,-3.1175c1.47813,-0.88687 2.06938,-2.71437 1.3975,-4.3c-2.45906,-5.53625 -3.15781,-11.31437 -2.0425,-16.555c0.04031,-0.1075 0.08063,-0.215 0.1075,-0.3225c0.60469,-2.6875 1.70656,-5.22719 3.225,-7.525c4.28656,-6.50375 12.34906,-11.20687 24.725,-11.7175zM126.5275,41.6025l1.1825,2.9025c0.56438,1.26313 1.84094,2.06938 3.225,2.0425c1.37063,0 2.4725,0.18813 3.44,0.5375c-0.12094,0.34938 -0.215,0.68531 -0.215,1.075c0,1.89469 1.54531,3.44 3.44,3.44c0.52406,0 0.95406,-0.215 1.3975,-0.43c0.76594,1.26313 1.42438,2.71438 1.8275,4.3c0.67188,2.60688 0.87344,5.45563 0.645,7.8475c-0.16125,1.67969 -0.59125,2.9025 -0.9675,3.7625c-0.60469,-1.00781 -1.65281,-1.72 -2.9025,-1.72c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c0.77938,0 1.46469,-0.30906 2.0425,-0.7525c0.29563,0.72563 0.81969,1.33031 1.505,1.72c0.08063,0.22844 0.215,0.72563 0.1075,1.6125c-0.26875,2.2575 -0.80625,3.30563 -1.075,3.655c-0.1075,0.13438 -0.20156,0.09406 -0.215,0.1075c-1.49156,0.28219 -2.63375,1.505 -2.795,3.01c-0.16125,1.53188 -0.72562,3.38625 -1.3975,5.0525c-0.94062,0.61813 -1.6125,1.58563 -1.6125,2.795c0,0.12094 0.09406,0.20156 0.1075,0.3225c-0.09406,0.16125 -0.22844,0.41656 -0.3225,0.5375c-0.38969,0.55094 -0.86,0.81969 -0.3225,0.5375c-1.11531,0.59125 -1.81406,1.74688 -1.8275,3.01c0,3.48031 -0.14781,6.31563 0.215,10.4275c0.04031,0.29563 0.1075,0.57781 0.215,0.86c0.51063,1.42438 1.34375,2.58 2.2575,3.655c0.01344,0.02688 -0.01344,0.09406 0,0.1075c-0.14781,0.38969 -0.3225,0.73906 -0.3225,1.1825c0,1.89469 1.54531,3.44 3.44,3.44c0.72563,0 1.38406,-0.25531 1.935,-0.645c0.36281,0.20156 0.69875,0.45688 1.075,0.645c2.74125,1.41094 5.6975,2.58 8.6,3.7625c0.81969,0.33594 1.67969,0.61813 2.4725,0.9675c3.62813,1.6125 6.89344,3.46688 9.245,5.9125c1.63938,1.70656 2.74125,3.91031 3.44,6.5575h-2.6875c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-1.89469,0 -3.44,1.54531 -3.44,3.44h-10.32c-0.1075,0 -0.215,0 -0.3225,0c-0.04031,0 -0.06719,0 -0.1075,0c-1.04812,-1.70656 -2.21719,-3.25187 -3.5475,-4.6225c-3.01,-3.07719 -6.5575,-5.33469 -10.2125,-7.2025c-0.56437,-1.11531 -1.66625,-1.935 -3.01,-1.935c-0.24187,0 -0.41656,0.16125 -0.645,0.215c-0.29562,-0.13437 -0.56437,-0.30906 -0.86,-0.43c-2.84875,-1.23625 -5.57656,-2.365 -8.17,-3.44c1.55875,-0.3225 2.795,-1.57219 2.795,-3.225c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,0.645 0.22844,1.20938 0.5375,1.72c-0.76594,-0.34937 -1.66625,-0.72562 -2.365,-1.075c-3.70875,-1.86781 -5.99312,-3.81625 -6.9875,-6.1275c-0.06719,-0.76594 -0.06719,-1.43781 -0.1075,-2.15c0.57781,0.44344 1.26313,0.7525 2.0425,0.7525c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-0.86,0 -1.65281,0.33594 -2.2575,0.86c-0.01344,-1.16906 -0.01344,-2.29781 0,-3.5475c0.40313,-0.44344 1.02125,-0.77937 1.3975,-1.29c0.86,-1.19594 1.59906,-2.60687 2.365,-4.1925c1.31688,-2.72781 2.24406,-5.99312 2.795,-9.245c0.9675,-0.52406 2.01563,-0.60469 2.795,-1.6125c1.04813,-1.35719 1.89469,-3.09062 2.4725,-5.2675c0.25531,0.06719 0.47031,0.215 0.7525,0.215c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-0.04031,0 -0.06719,0 -0.1075,0c-0.13437,-1.04812 -0.37625,-2.01562 -0.7525,-2.9025c-0.25531,-0.60469 -1.00781,-0.87344 -1.3975,-1.3975c1.06156,-2.23062 2.08281,-4.42094 2.365,-7.31c0.06719,-0.71219 0.08063,-1.41094 0.1075,-2.15c1.80063,-0.12094 3.225,-1.6125 3.225,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-0.04031,0 -0.06719,0 -0.1075,0c-0.09406,-0.60469 -0.20156,-1.20937 -0.3225,-1.8275c3.07719,-0.83312 6.5575,-1.14219 9.9975,-1.29zM149.21,117.2825c-0.41656,-0.17469 -0.81969,-0.3225 -1.29,-0.3225c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.42437 -0.91375,-2.59344 -2.15,-3.1175zM50.955,41.71l1.1825,2.4725c0.22844,0.45688 0.56438,0.86 0.9675,1.1825c-0.88687,0.61813 -1.505,1.62594 -1.505,2.795c0,1.89469 1.54531,3.44 3.44,3.44c0.29563,3.21156 0.9675,6.43656 2.15,9.5675c-0.86,1.15563 -1.6125,2.58 -1.935,4.3c-0.08062,0 -0.13437,-0.1075 -0.215,-0.1075c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c0.28219,0 0.49719,-0.14781 0.7525,-0.215c0.57781,2.17688 1.42438,3.91031 2.4725,5.2675c0.81969,1.04813 1.89469,1.1825 2.9025,1.72c0.57781,3.225 1.46469,6.45 2.795,9.1375c0.77938,1.58563 1.59906,2.99656 2.4725,4.1925c0.34938,0.48375 0.91375,0.76594 1.29,1.1825c0,1.27656 0,2.45906 0,3.655c-0.61812,-0.56437 -1.46469,-0.86 -2.365,-0.86c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c0.86,0 1.65281,-0.33594 2.2575,-0.86c-0.02687,0.68531 -0.05375,1.31688 -0.1075,2.0425c-0.94062,2.39188 -3.26531,4.42094 -7.095,6.3425c-0.80625,0.40313 -1.67969,0.88688 -2.58,1.29c0.38969,-0.55094 0.645,-1.20937 0.645,-1.935c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.70656 1.27656,3.06375 2.9025,3.3325c-2.59344,1.06156 -5.44219,2.10969 -8.2775,3.3325c-0.29562,0.12094 -0.56437,0.29563 -0.86,0.43c-0.22844,-0.05375 -0.40312,-0.215 -0.645,-0.215c-1.34375,0 -2.44562,0.81969 -3.01,1.935c-3.655,1.86781 -7.18906,4.12531 -10.2125,7.2025c-1.34375,1.37063 -2.49937,2.92938 -3.5475,4.6225c-0.14781,-0.01344 -0.28219,-0.01344 -0.43,0h-10.32c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-1.89469,0 -3.44,1.54531 -3.44,3.44h-2.9025c0.71219,-2.66062 1.78719,-4.945 3.44,-6.665c2.365,-2.45906 5.68406,-4.3 9.3525,-5.9125c3.66844,-1.6125 7.6325,-2.91594 11.18,-4.73c0.37625,-0.18812 0.71219,-0.44344 1.075,-0.645c0.56438,0.40313 1.1825,0.7525 1.935,0.7525c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-0.40312 -0.20156,-0.71219 -0.3225,-1.075c1.00781,-1.12875 1.81406,-2.44562 2.365,-3.9775c0.06719,-0.28219 0.1075,-0.56437 0.1075,-0.86c0.36281,-4.13875 0.3225,-7.04125 0.3225,-10.535c0,-1.1825 -0.61812,-2.27094 -1.6125,-2.9025c-0.01344,0 -0.08062,-0.04031 -0.215,-0.1075c-0.13437,-0.1075 -0.25531,-0.28219 -0.43,-0.5375c-0.06719,-0.09406 -0.14781,-0.30906 -0.215,-0.43c0,-0.06719 0,-0.13437 0,-0.215c0,-1.16906 -0.61812,-2.17687 -1.505,-2.795c-0.73906,-1.73344 -1.34375,-3.66844 -1.505,-5.2675c-0.13437,-1.62594 -1.3975,-2.91594 -3.01,-3.1175c-0.02687,-0.01344 -0.06719,0.01344 -0.1075,0c-0.02687,-0.02687 0.04031,-0.06719 0,-0.1075c-0.28219,-0.36281 -0.80625,-1.38406 -1.075,-3.655c-0.12094,-1.02125 0.08063,-1.53187 0.215,-1.72c0.13438,-0.08062 0.12094,-0.12094 0.1075,-0.1075c0.49719,-0.3225 0.90031,-0.76594 1.1825,-1.29c0.60469,0.52406 1.3975,0.86 2.2575,0.86c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44c-1.16906,0 -2.17687,0.61813 -2.795,1.505c-1.94844,-5.56312 -1.51844,-11.24719 1.075,-15.8025c0.51063,0.30906 1.075,0.5375 1.72,0.5375c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-0.77937 -0.30906,-1.46469 -0.7525,-2.0425c3.3325,-2.41875 7.94156,-4.04469 13.8675,-4.4075zM44.72,55.04c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM127.28,55.04c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM44.72,75.68c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM127.28,75.68c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM55.04,86c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM116.96,86c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM44.72,96.32c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM127.28,96.32c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM24.08,116.96c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44z"></path></g></g></svg>
+        Add Users
+        <svg style="position: absolute; right: 10px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M51.55969,13.73313c-1.3975,0 -2.64719,0.84656 -3.18469,2.13656c-0.52406,1.30344 -0.215,2.78156 0.79281,3.7625l66.36781,66.36781l-66.36781,66.36781c-0.90031,0.86 -1.26313,2.15 -0.94063,3.34594c0.30906,1.20938 1.24969,2.15 2.45906,2.45906c1.19594,0.3225 2.48594,-0.04031 3.34594,-0.94063l68.8,-68.8c1.34375,-1.34375 1.34375,-3.52062 0,-4.86437l-68.8,-68.8c-0.645,-0.67188 -1.53187,-1.03469 -2.4725,-1.03469z"></path></g></g></svg>
+      </button></a>
+    </div>
+
+    <div class="col-lg-6" style="padding-top: 20px; padding-bottom: 20px;">
+      <a href="#!agents"><button style="height: 70px;" type="button" class="btn btn-block btn-primary btn-lg">
+        <svg style="position: absolute; left: 20px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M86,0c-4.44781,0 -8.54625,2.0425 -13.0075,4.73c-4.46125,2.6875 -9.28531,6.15438 -14.7275,9.7825c-10.88437,7.25625 -24.25469,15.09031 -41.28,17.9525c-1.67969,0.28219 -3.09062,0.69875 -4.3,1.6125c-1.20937,0.91375 -2.01562,2.33813 -2.2575,3.655c-0.47031,2.62031 0.5375,4.36719 0.86,5.16c2.62031,6.42313 8.22375,10.03781 12.47,13.6525c4.15219,3.5475 7.08156,6.58438 7.2025,11.9325c-0.01344,0.3225 0.02688,0.65844 0.1075,0.9675c0.09406,0.68531 0.40313,1.31688 0.86,1.8275c0.40313,0.72563 0.91375,1.73344 1.8275,2.9025c0.18813,0.24188 0.43,0.49719 0.645,0.7525v13.4375c-1.27656,0.13438 -1.59906,-0.26875 -3.225,0.5375c-3.60125,1.77375 -7.095,6.36938 -7.095,13.6525c0,7.74 5.44219,13.98844 12.5775,15.8025c4.63594,12.01313 10.38719,24.8325 18.06,35.045c7.99531,10.62906 18.34219,18.5975 31.2825,18.5975c12.94031,0 23.28719,-7.96844 31.2825,-18.5975c7.67281,-10.2125 13.42406,-23.03187 18.06,-35.045c7.17563,-1.78719 12.5775,-8.03562 12.5775,-15.8025c0,-7.48469 -3.42656,-12.04 -7.095,-13.76c-1.16906,-0.55094 -2.19031,-0.59125 -3.225,-0.7525v-13.115c0.215,-0.25531 0.45688,-0.51062 0.645,-0.7525c1.16906,-1.49156 1.69313,-2.53969 2.0425,-3.225c0.04031,-0.06719 0.08063,-0.14781 0.1075,-0.215c0.01344,-0.04031 0.09406,-0.08062 0.1075,-0.1075c0.08063,-0.13437 0.14781,-0.28219 0.215,-0.43c0.14781,-0.26875 0.25531,-0.56437 0.3225,-0.86c0,-0.04031 0,-0.06719 0,-0.1075c0,-0.06719 0,-0.14781 0,-0.215c0,-0.04031 0,-0.06719 0,-0.1075c0.01344,-0.14781 0.01344,-0.28219 0,-0.43c0.09406,-7.14875 2.92938,-9.91687 6.9875,-13.0075c4.12531,-3.14437 10.01094,-6.03344 12.685,-12.5775c0.3225,-0.79281 1.33031,-2.53969 0.86,-5.16c-0.22844,-1.31687 -1.04812,-2.74125 -2.2575,-3.655c-1.20937,-0.91375 -2.62031,-1.33031 -4.3,-1.6125c-16.99844,-2.84875 -28.58156,-10.54844 -38.7,-17.845c-10.11844,-7.29656 -18.90656,-14.62 -30.315,-14.62zM86,6.88c8.34469,0 16.05781,5.92594 26.3375,13.33c10.27969,7.40406 23.005,15.92344 41.495,19.0275c0.56438,0.09406 0.56438,0.13438 0.7525,0.215c-0.06719,0.18813 -0.06719,0.215 -0.3225,0.86c-1.53187,3.7625 -5.65719,6.04688 -10.4275,9.675c-3.655,2.795 -7.37719,6.7725 -8.9225,12.7925c-2.05594,-1.26312 -4.56875,-2.67406 -7.955,-4.085c-8.7075,-3.61469 -22.07781,-7.095 -40.9575,-7.095c-18.87969,0 -32.25,3.48031 -40.9575,7.095c-3.49375,1.45125 -6.08719,2.9025 -8.17,4.1925c-1.65281,-4.98531 -5.18687,-8.7075 -8.6,-11.61c-4.64937,-3.96406 -8.94937,-7.08156 -10.535,-10.965c-0.25531,-0.645 -0.25531,-0.67187 -0.3225,-0.86c0.18813,-0.08062 0.18813,-0.12094 0.7525,-0.215c18.46313,-3.10406 32.70688,-11.58312 43.86,-19.0275c5.57656,-3.72219 10.45438,-7.12187 14.5125,-9.5675c4.05813,-2.44562 7.32344,-3.7625 9.46,-3.7625zM86,20.64c-5.6975,0 -10.32,4.945 -10.32,4.945c0,5.6975 4.6225,15.695 10.32,15.695c5.6975,0 10.32,-9.9975 10.32,-15.695c0,0 -4.6225,-4.945 -10.32,-4.945zM86,58.48c18.01969,0 30.39563,3.39969 38.27,6.665c6.08719,2.52625 7.35031,3.80281 8.4925,4.73c-1.31687,1.67969 -3.50719,4.085 -6.9875,6.45c-6.96062,4.74344 -19.06781,9.675 -39.775,9.675c-20.70719,0 -32.81437,-4.93156 -39.775,-9.675c-3.48031,-2.365 -5.67062,-4.77031 -6.9875,-6.45c1.14219,-0.92719 2.40531,-2.20375 8.4925,-4.73c7.87438,-3.26531 20.25031,-6.665 38.27,-6.665zM41.28,81.1625c0.36281,0.26875 0.68531,0.48375 1.075,0.7525c8.19688,5.57656 21.8225,10.965 43.645,10.965c21.8225,0 35.44813,-5.38844 43.645,-10.965c0.38969,-0.26875 0.71219,-0.48375 1.075,-0.7525v13.975l3.9775,-0.645c0,0 1.62594,-0.26875 3.1175,0.43c1.49156,0.69875 3.225,1.935 3.225,7.6325c0,5.11969 -3.78937,9.07031 -8.6,9.5675l-2.0425,0.215l-0.7525,2.0425c-4.6225,12.16094 -10.54844,25.12813 -17.845,34.83c-7.29656,9.70188 -15.68156,15.91 -25.8,15.91c-10.11844,0 -18.50344,-6.20812 -25.8,-15.91c-7.29656,-9.70187 -13.115,-22.66906 -17.7375,-34.83l-0.7525,-2.0425l-2.15,-0.215c-4.82406,-0.49719 -8.6,-4.44781 -8.6,-9.5675c0,-5.42875 1.66625,-6.65156 3.225,-7.4175c1.55875,-0.76594 3.225,-0.645 3.225,-0.645l3.87,0.43zM57.62,96.32c-5.54969,0.17469 -9.46,1.42438 -9.46,8.0625c0,8.85531 6.93375,16.0175 15.48,16.0175c8.54625,0 15.48,-7.16219 15.48,-16.0175c1.62594,-0.60469 3.84313,-1.1825 6.88,-1.1825c3.01,0 5.25406,0.47031 6.88,1.075c0,0.04031 0,0.06719 0,0.1075c0,8.85531 6.93375,16.0175 15.48,16.0175c8.54625,0 15.48,-7.16219 15.48,-16.0175c0,-8.85531 -6.93375,-8.0625 -15.48,-8.0625c-5.375,0 -10.01094,-0.24187 -12.7925,1.72c-2.41875,-0.95406 -5.60344,-1.72 -9.5675,-1.72c-3.91031,0 -7.05469,0.77938 -9.46,1.72c-2.76812,-2.00219 -7.48469,-1.72 -12.9,-1.72c-2.13656,0 -4.16562,-0.05375 -6.02,0z"></path></g></g></svg>
+Add Agents
+        <svg style="position: absolute; right: 10px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M51.55969,13.73313c-1.3975,0 -2.64719,0.84656 -3.18469,2.13656c-0.52406,1.30344 -0.215,2.78156 0.79281,3.7625l66.36781,66.36781l-66.36781,66.36781c-0.90031,0.86 -1.26313,2.15 -0.94063,3.34594c0.30906,1.20938 1.24969,2.15 2.45906,2.45906c1.19594,0.3225 2.48594,-0.04031 3.34594,-0.94063l68.8,-68.8c1.34375,-1.34375 1.34375,-3.52062 0,-4.86437l-68.8,-68.8c-0.645,-0.67188 -1.53187,-1.03469 -2.4725,-1.03469z"></path></g></g></svg>
+      </button></a>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="row"> 
+
+    <div class="col-lg-6" style="padding-top: 20px; padding-bottom: 20px;">
+      <a href="#!locations"><button style="height: 70px;" type="button" class="btn btn-block btn-primary btn-lg">
+      <svg style="position: absolute; left: 20px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M86,0.215c-26.43156,0 -47.945,21.51344 -47.945,47.945c0,21.90313 11.48906,47.01781 22.79,66.9725c11.30094,19.95469 22.575,34.7225 22.575,34.7225c0.60469,0.81969 1.55875,1.31688 2.58,1.31688c1.02125,0 1.97531,-0.49719 2.58,-1.31688c0,0 11.2875,-14.96937 22.575,-35.045c11.2875,-20.07562 22.79,-45.20375 22.79,-66.65c0,-26.43156 -21.51344,-47.945 -47.945,-47.945zM86,6.665c22.97813,0 41.495,18.51688 41.495,41.495c0,19.10813 -10.8575,43.86 -21.93,63.5325c-9.04344,16.08469 -16.56844,26.63313 -19.565,30.745c-3.01,-4.05812 -10.535,-14.47219 -19.565,-30.4225c-11.05906,-19.53812 -21.93,-44.23625 -21.93,-63.855c0,-22.97812 18.51688,-41.495 41.495,-41.495zM86,27.6275c-13.19562,0 -23.9725,10.77688 -23.9725,23.9725c0,13.19563 10.77688,23.9725 23.9725,23.9725c13.19563,0 23.9725,-10.77687 23.9725,-23.9725c0,-13.19562 -10.77687,-23.9725 -23.9725,-23.9725zM86,34.2925c9.60781,0 17.3075,7.69969 17.3075,17.3075c0,9.60781 -7.69969,17.3075 -17.3075,17.3075c-9.60781,0 -17.3075,-7.69969 -17.3075,-17.3075c0,-9.60781 7.69969,-17.3075 17.3075,-17.3075zM52.1375,117.4975c-13.76,2.01563 -25.39687,5.20031 -33.97,9.3525c-4.28656,2.06938 -7.83406,4.38063 -10.4275,7.095c-2.59344,2.71438 -4.3,6.08719 -4.3,9.675c0,4.91813 3.14438,9.12406 7.6325,12.47c4.48813,3.34594 10.54844,6.04688 17.9525,8.385c14.79469,4.67625 34.83,7.525 56.975,7.525c22.145,0 42.18031,-2.84875 56.975,-7.525c7.40406,-2.33812 13.46438,-5.03906 17.9525,-8.385c4.48813,-3.34594 7.6325,-7.55187 7.6325,-12.47c0,-3.57437 -1.70656,-6.96062 -4.3,-9.675c-2.59344,-2.71437 -6.14094,-5.02562 -10.4275,-7.095c-8.57312,-4.15219 -20.21,-7.33687 -33.97,-9.3525c-1.89469,-0.29562 -3.68187,1.00781 -3.9775,2.9025c-0.29562,1.89469 1.00781,3.68188 2.9025,3.9775c13.27625,1.94844 24.45625,5.03906 32.035,8.7075c3.78938,1.84094 6.71875,3.84313 8.4925,5.6975c1.77375,1.85438 2.365,3.39969 2.365,4.8375c0,1.97531 -1.31687,4.24625 -4.8375,6.88c-3.52062,2.63375 -8.98969,5.22719 -15.91,7.4175c-13.84062,4.36719 -33.37875,7.2025 -54.9325,7.2025c-21.55375,0 -41.09187,-2.83531 -54.9325,-7.2025c-6.92031,-2.19031 -12.38937,-4.78375 -15.91,-7.4175c-3.52062,-2.63375 -4.8375,-4.90469 -4.8375,-6.88c0,-1.43781 0.59125,-2.98312 2.365,-4.8375c1.77375,-1.85437 4.70313,-3.85656 8.4925,-5.6975c7.57875,-3.66844 18.75875,-6.75906 32.035,-8.7075c1.89469,-0.29562 3.19813,-2.08281 2.9025,-3.9775c-0.29562,-1.89469 -2.08281,-3.19812 -3.9775,-2.9025z"></path></g></g></svg>
+         Add Location
+      <svg style="position: absolute; right: 10px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M51.55969,13.73313c-1.3975,0 -2.64719,0.84656 -3.18469,2.13656c-0.52406,1.30344 -0.215,2.78156 0.79281,3.7625l66.36781,66.36781l-66.36781,66.36781c-0.90031,0.86 -1.26313,2.15 -0.94063,3.34594c0.30906,1.20938 1.24969,2.15 2.45906,2.45906c1.19594,0.3225 2.48594,-0.04031 3.34594,-0.94063l68.8,-68.8c1.34375,-1.34375 1.34375,-3.52062 0,-4.86437l-68.8,-68.8c-0.645,-0.67188 -1.53187,-1.03469 -2.4725,-1.03469z"></path></g></g></svg>
+    </button></a>
+  </div>
+
+  <div class="col-lg-6" style="padding-top: 20px; padding-bottom: 20px;">
+    <a href="#!monitor"><button style="height: 70px;" type="button" class="btn btn-block btn-primary btn-lg">
+      <svg style="position: absolute; left: 20px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M13.76,13.76c-3.78937,0 -6.88,3.09063 -6.88,6.88v99.76c0,3.78938 3.09063,6.88 6.88,6.88h49.71875c-0.88687,1.02125 -2.00219,1.94844 -3.39969,2.87563c-2.84875,1.89469 -6.67844,3.57437 -10.88438,5.40187c-8.385,3.64156 -18.39594,7.88781 -24.55031,17.36125c-0.69875,1.06156 -0.7525,2.41875 -0.14781,3.52063c0.60469,1.11531 1.76031,1.80062 3.02344,1.80062h116.96c1.26313,0 2.41875,-0.68531 3.02344,-1.80062c0.60469,-1.10188 0.55094,-2.44563 -0.13437,-3.50719c-6.1275,-9.47344 -16.09813,-13.70625 -24.52344,-17.32094c-4.21938,-1.80062 -8.10281,-3.45344 -11.03219,-5.32125c-1.49156,-0.95406 -2.67406,-1.94844 -3.61469,-3.01h50.04125c3.78938,0 6.88,-3.09062 6.88,-6.88v-99.76c0,-3.78937 -3.09062,-6.88 -6.88,-6.88zM13.76,20.64h144.48v99.76h-52.12406c-0.09406,-2.87562 -0.13437,-5.61687 -0.13437,-8.43875c0.44344,-0.49719 1.04812,-0.87344 1.46469,-1.46469c0.76594,-1.11531 1.53188,-2.43219 2.2575,-3.85656h48.53625v-6.88h-45.88906c0.38969,-1.33031 0.77938,-2.67406 1.04813,-4.01781c1.10187,-0.55094 2.33812,-0.60469 3.19812,-1.72c1.65281,-2.16344 2.71438,-5.21375 3.10406,-9.43312c0,0 0,-0.01344 0,-0.02688c0.215,-2.49937 -0.06719,-4.73 -0.86,-6.62469c-0.25531,-0.61812 -0.69875,-1.16906 -1.10187,-1.72c1.12875,-2.43219 1.935,-5.13312 2.27094,-8.2775c0.47031,-4.44781 0.20156,-9.46 -1.06156,-14.31094c-1.24969,-4.86438 -3.50719,-9.60781 -7.24281,-13.24938c-3.225,-3.13094 -7.78031,-4.99875 -13.03437,-5.53625l-2.71438,-5.41531c-0.57781,-1.16906 -1.77375,-1.90813 -3.07719,-1.90813c-17.05219,0 -29.36094,6.69188 -35.85125,16.555c-6.11406,9.28531 -6.81281,21.08344 -2.67406,31.98125c-1.49156,1.89469 -2.71437,4.36719 -2.39187,8.17c0,0.05375 0,0.12094 0.01344,0.17469c0.57781,4.1925 1.73344,7.17563 3.3325,9.28531c0.80625,1.03469 1.94844,1.075 2.94281,1.65281c0.22844,1.49156 0.57781,2.96969 0.98094,4.42094h-45.4725zM90.85094,34.60156l2.39188,4.78375c0.57781,1.15562 1.77375,1.89469 3.07719,1.89469c4.78375,0 8.03563,1.54531 10.58875,4.03125c2.56656,2.49938 4.36719,6.07375 5.38844,10.03781c1.02125,3.95062 1.24969,8.25062 0.87344,11.89219c-0.37625,3.62813 -1.51844,6.62469 -2.35156,7.68625c-0.68531,0.87344 -0.91375,2.01563 -0.60469,3.07719c0.30906,1.06156 1.10187,1.90813 2.13656,2.28438c0.01344,0.01344 0.04031,0.04031 0.14781,0.28219c0.24188,0.57781 0.48375,1.80063 0.33594,3.42656c-0.29562,3.31906 -1.12875,5.09281 -1.70656,5.84531c-0.57781,0.7525 -0.81969,0.63156 -0.71219,0.63156c-1.69312,0 -3.14437,1.24969 -3.39969,2.92938c-0.43,2.92937 -1.70656,6.57094 -3.1175,9.48687c-0.71219,1.46469 -1.46469,2.75469 -2.09625,3.655c-0.63156,0.91375 -1.33031,1.42438 -0.99437,1.23625c-1.075,0.61813 -1.73344,1.74688 -1.73344,2.98313c0,4.81062 0,9.05687 0.34938,14.67375c0.01344,0.33594 0.09406,0.67187 0.215,0.98094c1.59906,4.3 4.8375,7.35031 8.4925,9.675c3.64156,2.32469 7.80719,4.05813 11.99969,5.85875c5.85875,2.49938 11.20688,5.56313 15.8025,9.40625h-99.82719c4.6225,-3.85656 9.98406,-6.94719 15.82937,-9.48687c4.1925,-1.8275 8.34469,-3.58781 11.94594,-5.97969c3.60125,-2.39187 6.75906,-5.56312 8.19687,-9.95719c0.06719,-0.20156 0.1075,-0.41656 0.13438,-0.645c0.72562,-5.83187 0.36281,-9.86312 0.36281,-14.87531c0,-1.22281 -0.65844,-2.365 -1.73344,-2.96969c0.26875,0.13438 -0.43,-0.38969 -1.08844,-1.27656c-0.65844,-0.87344 -1.42438,-2.10969 -2.13656,-3.53406c-1.43781,-2.83531 -2.67406,-6.40969 -2.95625,-9.39281c-0.17469,-1.76031 -1.65281,-3.1175 -3.42656,-3.1175c0.51063,0 0.17469,0.20156 -0.44344,-0.63156c-0.63156,-0.80625 -1.49156,-2.66062 -1.96187,-5.9125c-0.17469,-2.78156 1.505,-4.1925 1.20937,-4.00437c1.3975,-0.92719 1.92156,-2.72781 1.23625,-4.25969c-4.21937,-9.54062 -3.61469,-19.69937 1.505,-27.46625c4.86438,-7.37719 14.04219,-12.73875 28.07094,-13.24937zM13.76,106.64h48.21375c0.72563,1.34375 1.47813,2.59344 2.2575,3.64156c0.41656,0.56437 0.99438,0.92719 1.45125,1.41094c0.02688,3.14438 0.12094,5.81844 0,8.7075h-51.9225zM141.04,110.08v6.88h6.88v-6.88z"></path></g></g></svg>
+    Monitor
+      <svg style="position: absolute; right: 10px; top: 30px;" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="50" height="50"
+viewBox="0 0 172 172"
+style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ffffff"><path d="M51.55969,13.73313c-1.3975,0 -2.64719,0.84656 -3.18469,2.13656c-0.52406,1.30344 -0.215,2.78156 0.79281,3.7625l66.36781,66.36781l-66.36781,66.36781c-0.90031,0.86 -1.26313,2.15 -0.94063,3.34594c0.30906,1.20938 1.24969,2.15 2.45906,2.45906c1.19594,0.3225 2.48594,-0.04031 3.34594,-0.94063l68.8,-68.8c1.34375,-1.34375 1.34375,-3.52062 0,-4.86437l-68.8,-68.8c-0.645,-0.67188 -1.53187,-1.03469 -2.4725,-1.03469z"></path></g></g></svg>
+    </button></a>
+  </div>
+
+</div>
+
+
+
+
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Stats</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table class="table table-bordered wt-responsive-table">
+          <tbody>
+            <tr>
+              <td>Total Active App Users</td>
+              <td>1000</td>
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Modal -->
+<div class="modal fade" id="modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+          <button type="button" class="btn btn-block btn-secondary btn-xs">Reject</button>
+          <button type="button" class="btn btn-block btn-primary btn-xs">Approve</button>
+      </div>
+      
+    </div>
+  </div>
+</div>

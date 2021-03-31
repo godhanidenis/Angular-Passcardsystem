@@ -1,0 +1,761 @@
+<div class="row">
+
+  <!-- Trigger the modal with a button -->
+<button ng-if="myAccessType.can_edit_locations" data-backdrop="false" type="button" class="btn btn-primary btn-md btnAddLocation" data-toggle="modal" data-target="#myModal">Add a New Location</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Create New Location</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <span ng-show="step==1">
+            
+              <div class="form-group">
+                  <label>Select Location Type</label>
+                  <select ng-model="type" class="custom-select">
+                    <option value="{{ty.url}}" ng-repeat="ty in residence_type">{{ty.residence_type}}</option>
+                  </select>
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Location Name</label>
+                  <input ng-model="name" type="text" class="form-control" id="locationname" placeholder="Enter location name">
+                </div>
+
+                <div ng-if="type == 'https://connect.s-onedigital.com/api/residence_type/2/'" class="form-group">
+                  <label for="officecompany">Company</label>
+                  <input ng-model="office.company" type="text" class="form-control" id="officecompany" placeholder="Enter company name">
+                </div>
+
+                <div ng-if="type == 'https://connect.s-onedigital.com/api/residence_type/2/'" class="form-group">
+                  <label for="officefloor">Floor</label>
+                  <input ng-model="office.floor" type="text" class="form-control" id="officefloor" placeholder="Enter office floor">
+                </div>
+
+                <div class="form-group">
+                  <label>Location Address</label>
+                  <textarea ng-model="address" class="form-control" rows="3" placeholder="Enter the address here"></textarea>
+                </div>
+
+                
+
+                <div class="form-group">
+                  <label for="personname">Contact Person</label>
+                  <input ng-model="contact_person" type="text" class="form-control" id="personname" placeholder="Enter contact person name">
+                </div>
+
+                <div class="form-group">
+                  <label for="personphone">Contact Phone</label>
+                  <input ng-model="contact_phone" type="text" class="form-control" id="personphone" placeholder="Enter contact person phone number">
+                </div>
+
+                <div class="form-group">
+                  <label for="personemail">Contact Email</label>
+                  <input ng-model="contact_email" type="text" class="form-control" id="personemail" placeholder="Enter contact person email">
+                </div>
+
+                <button ng-if="type && name && address && contact_person && contact_email" ng-click="setStep(2)" type="button" class="btn btn-primary btn-md">Next</button>
+
+              </span>
+
+              <span ng-show="step==2">
+
+                <div class="form-group">
+                  <label>Location Syndics</label>
+
+                  <div class="formFields">
+                    <input type="text" ng-model="syndics.name" class="form-control formFields" placeholder="Enter syndics name">
+                    <input type="text" ng-model="syndics.email" class="form-control formFields" placeholder="Enter syndics email">
+                    <input type="text" ng-model="syndics.phone" class="form-control formFields" placeholder="Enter syndics phone">
+                  </div>
+                  <a ng-click="addSyndics(syndics)" class="btn btn-block btn-success btn-xs" style="color: #fff;">+ complete the form and add</a> 
+                  
+                  <ul class="list-unstyled">
+                    <li ng-repeat="sin in syndicsList track by $index" style="margin: 10px 0px;">
+                      {{sin.name}}, {{sin.email}}, {{sin.phone}} <a ng-click="removeSyndics($index)" class="btn btn-warning btn-xs">-</a>
+                    </li>
+                  </ul>
+                  
+                </div>
+
+                <button ng-click="setStep(3)" type="button" class="btn btn-primary btn-md">Next</button>
+
+
+              </span>
+
+              <span ng-show="step==3">
+
+                <div class="form-group">
+                  <label>Location Areas / Blocks</label>
+
+                  <div class="formFields">
+                    <input type="text" ng-model="area.name" class="form-control formFields" placeholder="Enter area name">
+                    <input type="text" ng-model="area.prefix" class="form-control formFields" placeholder="Enter area prefix">
+                    <div class="row">
+                      <div class="col-md-12"><label>Area allotments</label></div>
+                      <div class="col-md-6"><input type="number" ng-model="area.allotmentsFrom" class="form-control formFields" placeholder="From (0)"></div>
+                      <div class="col-md-6"><input type="number" ng-model="area.allotmentsTo" class="form-control formFields" placeholder="To (100)"></div>
+                    </div>
+                    </div>
+                  <a ng-click="addArea(area)" class="btn btn-block btn-success btn-xs" style="color: #fff;">+ complete the form and add</a> 
+                  
+                  <ul class="list-unstyled">
+                    <li ng-repeat="ar in areasList track by $index" style="margin: 10px 0px;">
+                    {{ar.name}}, {{ar.prefix}}, {{ar.allotmentsFrom}}, {{ar.allotmentsTo}} <a class="btn btn-warning btn-xs" ng-click="removeArea($index)">-</a>
+                    </li>
+                    </ul>
+                  
+                </div>
+
+              </span>
+
+  
+  
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button ng-show="step==3" type="submit" class="btn btn-primary" ng-click="addResidence(name, address, contact_person, contact_email, contact_phone, type, syndicsList, areasList, office.company, office.floor)">Add Location</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+  
+  
+      <div class="col-md-12">
+          <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">Locations List</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                
+                 
+                  <table class="table table-bordered">
+                      <thead>                  
+                        <tr>
+                          <th>Location</th>
+                          <th>Contact</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <td><input ng-model="searchtxt.name" type="text" class="form-control" placeholder="Filter"></td>
+                        <tr ng-repeat="res in residences | filter:searchtxt | limitTo: limit | orderBy: 'name'">
+                          <td><span style="font-weight: 900; text-transform: uppercase;">{{res.name}}</span><br>
+                            <span>{{res.address}}</span><br>
+                            <span ng-if="res.company != ''">Company: {{res.company}} - </span>  <span ng-if="res.floor != ''"> Floor: {{res.floor}}</span>
+                          </td>
+                          <td>{{res.contact_person}}<br><a class="badge bg-success" href="mailto:{{res.contact_email}}">Email: {{res.contact_email}}</a>
+                            <br><a class="badge bg-primary" href="tel:{{res.contact_phone}}">Phone: {{res.contact_phone}}</a></td>
+                          <td>
+                            
+                            <a style="margin-left: 10px; display: inline-block;"  class="badge bg-success pull-right" data-toggle="modal" data-target="#syndicsModal" ng-click="setResidenceForModal(res.url)">syndics</a>
+                        
+                            <a class="badge bg-info pull-right" data-toggle="modal" data-target="#areasModal" ng-click="setResidenceForModal(res.url)">areas</a>
+                            <br>
+                            <br>
+                            <a ng-if="myAccessType.can_edit_locations" data-toggle="modal" data-target="#editLocationModal" ng-click="setLocationForEdit(res)" style="margin-left: 10px; display: inline-block;" class="badge bg-primary pull-right">edit</a>
+                          
+                            <a ng-if="myAccessType.can_edit_locations" class="badge bg-warning pull-right" ng-confirm-click="removeData(res.url)" ng-confirm-message="You are about to remove the location and everything linked to it, areas, syndics.">remove</a>
+                          
+                          </td> 
+                        </tr>
+                       
+                      </tbody>
+                    </table>
+                    <!-- <a class="btn btn-block btn-default btn-xs" ng-click="loadMore()">More..</a> -->
+      
+              <!-- <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Add Access Type</button>
+              </div> -->
+  
+          </div>
+          
+  </div>
+  </div>
+  
+  
+  
+  </div>
+
+
+
+  <!-- Syndics Modal -->
+  <div id="syndicsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+  
+          <div class="card card-widget widget-user-2">
+          <ul class="nav flex-column">
+
+
+
+
+            <div class="card card-widget widget-user-2" ng-repeat="syn in residenceSyndics">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header ">
+                <div class="widget-user-image">
+                  <!-- <a style="width: 75px; height: 75px; display: block;" >
+                    <img width="100%" class="img-circle elevation-2" src="" alt=""></a> -->
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 style="position: absolute;
+                top: -5px; left: -60px;
+                padding-left: 0px;" class="widget-user-username">{{syn.syndics_name}}</h3>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link">
+                      Phone <span class="float-right badge">phone: {{syn.syndics_phone}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link">
+                      Email <span class="float-right badge">email: {{syn.syndics_email}}</span>
+                    </a>
+                  </li>
+                </ul>
+                <a ng-if="myAccessType.can_edit_locations" class="badge bg-success" ng-click="setSyndicToEdit(syn)" data-toggle="modal" data-target="#editSyndicModal">Edit</a>
+              <a ng-if="myAccessType.can_edit_locations" class="badge bg-warning" ng-confirm-click="removeData(syn.url)" ng-confirm-message="You are about to remove the syndic.">Remove</a>
+              </div> 
+            </div>
+
+
+
+
+  
+          </ul>
+   
+        </div>
+  
+        </div>
+        <div class="modal-footer">
+          <a ng-if="myAccessType.can_edit_locations" class="btn btn-primary" style="color: #fff;" data-toggle="modal" data-target="#addSyndicModal">Add new syndics to this location</a>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+
+
+    <!-- Areas Modal -->
+    <div id="areasModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-body">
+    
+    
+    
+    
+            <div class="card card-widget widget-user-2" ng-repeat="syn in residenceAreas">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header ">
+                <div class="widget-user-image">
+                  <a style="width: 75px; height: 75px; display: block;" href="{{syn.qr_code}}" target="_blank">
+                    <div style="">
+    
+                      <img width="100%" class="img-circle elevation-2" src="{{syn.qr_code}}" alt="{{syn.code}}">
+    
+                    </div></a>
+    
+    
+                      <div id="printSectionId" style="position: fixed; left: -200vw;">
+      
+                        <h3 style="text-align: center">{{syn.area_name}}</h3>
+                        <img width="100%" class="img-circle elevation-2" src="{{syn.qr_code}}" alt="{{syn.code}}">
+                        <h4 style="text-align: center">{{syn.code}}</h4>
+                        <!-- <h5 style="text-align: center"></h5> -->
+      
+                      </div>
+    
+    
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 style="position: absolute; font-size: 18px; font-weight: 700; 
+                top: 35px;
+                padding-left: 20px;" class="widget-user-username">{{syn.area_name}}</h3>
+                
+                <div style="position: absolute; right: 0px; top: 0px;">
+                  <a class="badge bg-primary" data-toggle="modal" data-target="#qrcodeModal" ng-click="setAreaForQRCode(syn)" target="_blank">View QR code</a>
+                  <a class="badge bg-primary" ng-click="printToCart('printSectionId')">Print QR code</a>
+                  <a ng-if="myAccessType.can_edit_locations" class="badge bg-success" data-toggle="modal" data-target="#editAreaModal" ng-click="setAreaToEdit(syn)">Edit</a>
+                  <a ng-if="myAccessType.can_edit_locations" class="badge bg-warning" ng-confirm-click="removeData(syn.url)" ng-confirm-message="You are about to remove the area.">Remove</a>
+                </div>
+    
+    
+                <!-- <h5 class="widget-user-desc">Lead Developer</h5> -->
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link">
+                      Prefix <span class="float-right badge">{{syn.area_prefix}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link">
+                      Allotments <span class="float-right badge">{{syn.area_allotments_from}}-{{syn.area_allotments_to}}</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link">
+                      Code <span class="float-right badge">{{syn.code}}</span>
+                    </a>
+                  </li>
+                  <!-- <li class="nav-item">
+                    <a class="nav-link">
+                      Actions <span class="float-right badge bg-danger">remove</span>
+                    </a>
+                  </li> -->
+                </ul>
+              </div>
+            </div>
+    
+    
+          </div>
+          <div class="modal-footer">
+            <a ng-if="myAccessType.can_edit_locations" class="btn btn-primary" style="color: #fff;" data-toggle="modal" data-target="#addAreaModal">Add a new area to this location</a>
+            <button ng-if="myAccessType.can_edit_locations" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+    
+      </div>
+    </div>
+
+
+
+
+
+        <!-- QR Code Modal -->
+<div id="qrcodeModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+
+
+
+
+        <div class="card card-widget widget-user-2" >
+          <!-- Add the bg color to the header using any of the bg-* classes -->
+          <div class="widget-user-header ">
+            <div class="widget-user-image">
+             
+                <div style="">
+
+                  <h3>{{areaForQRCode.area_name}}</h3>
+
+                  <img width="100%" src="{{areaForQRCode.qr_code}}" alt="{{syn.code}}">
+
+                  <h4>{{areaForQRCode.code}}</h4>
+
+                </div>
+
+
+            </div>
+            <!-- /.widget-user-image -->
+          
+
+          </div>
+
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="editLocationModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Edit Location</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            
+              <div class="form-group">
+                  <label>Select Location Type</label>
+                  <select ng-model="locationSelectedForEdit.type" class="custom-select">
+                    <option value="{{ty.url}}" ng-repeat="ty in residence_type">{{ty.residence_type}}</option>
+                  </select>
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Location Name</label>
+                  <input ng-model="locationSelectedForEdit.name" type="text" class="form-control" id="locationname" placeholder="Enter location name">
+                </div>
+
+                <div class="form-group">
+                  <label>Location Address</label>
+                  <textarea ng-model="locationSelectedForEdit.address" class="form-control" rows="3" placeholder="Enter the address here"></textarea>
+                </div>
+
+                
+
+                <div class="form-group">
+                  <label for="personname">Contact Person</label>
+                  <input ng-model="locationSelectedForEdit.contact_person" type="text" class="form-control" id="personname" placeholder="Enter contact person name">
+                </div>
+
+                <div class="form-group">
+                  <label for="personphone">Contact Phone</label>
+                  <input ng-model="locationSelectedForEdit.contact_phone" type="text" class="form-control" id="personphone" placeholder="Enter contact person phone number">
+                </div>
+
+                <div class="form-group">
+                  <label for="personemail">Contact Email</label>
+                  <input ng-model="locationSelectedForEdit.contact_email" type="text" class="form-control" id="personemail" placeholder="Enter contact person email">
+                </div>
+
+                <!-- <button ng-if="type && name && address && contact_person && contact_email" ng-click="setStep(2)" type="button" class="btn btn-primary btn-md">Next</button> -->
+
+
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button type="submit" class="btn btn-primary" ng-click="editResidence(locationSelectedForEdit)">Edit Location</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="addSyndicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Add syndics</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+
+         
+            
+              <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" ng-model="synd.name" class="form-control formFields" placeholder="Enter syndics name">
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Email</label>
+                  <input type="text" ng-model="synd.email" class="form-control formFields" placeholder="Enter syndics email">
+                </div>
+
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="text" ng-model="synd.phone" class="form-control formFields" placeholder="Enter syndics phone">
+                </div>
+
+                
+
+
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button type="submit" class="btn btn-primary" ng-click="addNewSyndic(synd)">Add syndics</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div id="editSyndicModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Edit syndics</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+
+         
+            
+              <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" ng-model="selectedsyndictoedit.syndics_name" class="form-control formFields" placeholder="Enter syndics name">
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Email</label>
+                  <input type="text" ng-model="selectedsyndictoedit.syndics_email" class="form-control formFields" placeholder="Enter syndics email">
+                </div>
+
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="text" ng-model="selectedsyndictoedit.syndics_phone" class="form-control formFields" placeholder="Enter syndics phone">
+                </div>
+
+                
+
+
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button type="submit" class="btn btn-primary" ng-click="saveEditedSyndic(selectedsyndictoedit)">Save syndics</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="addAreaModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Add area</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+
+
+
+
+            
+              <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" ng-model="are.name" class="form-control formFields" placeholder="Enter area name">
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Prefix</label>
+                  <input type="text" ng-model="are.prefix" class="form-control formFields" placeholder="Enter area prefix">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12"><label>Area allotments</label></div>
+                  <div class="col-md-6"><div class="form-group"><input type="number" ng-model="are.allotmentsFrom" class="form-control formFields" placeholder="From (0)"></div></div>
+                  <div class="col-md-6"><div class="form-group"><input type="number" ng-model="are.allotmentsTo" class="form-control formFields" placeholder="To (100)"></div></div>
+                </div>
+
+   
+                
+
+
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button type="submit" class="btn btn-primary" ng-click="addNewArea(are)">Add area</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div id="editAreaModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Edit area</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+
+         
+            
+              <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" ng-model="selectedareatoedit.area_name" class="form-control formFields" placeholder="Enter area name">
+                </div>
+            
+               
+
+                <div class="form-group">
+                  <label for="locationname">Prefix</label>
+                  <input type="text" ng-model="selectedareatoedit.area_prefix" class="form-control formFields" placeholder="Enter area prefix">
+                </div>
+
+                <div class="form-group">
+                  <label>Allotments from</label>
+                  <input type="text" ng-model="selectedareatoedit.area_allotments_from" class="form-control formFields" placeholder="Enter allotments from">
+                </div>
+
+
+                <div class="form-group">
+                  <label>Allotments to</label>
+                  <input type="text" ng-model="selectedareatoedit.area_allotments_to" class="form-control formFields" placeholder="Enter allotments to">
+                </div>
+
+                
+
+
+            </div>
+  
+          <div class="card-footer">
+             
+            
+            <button type="submit" class="btn btn-primary" ng-click="saveEditedArea(selectedareatoedit)">Save area</button>
+            <button data-dismiss="modal" class="btn btn-default" >Close</button>
+          
+          </div>
+      </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+
+  </div>
+</div>

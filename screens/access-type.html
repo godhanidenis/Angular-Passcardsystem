@@ -1,0 +1,366 @@
+<div class="row">
+
+<!-- Trigger the modal with a button -->
+<button ng-if="myAccessType.can_edit_acces_types" type="button" data-backdrop="false" class="btn btn-primary btn-md btnAddLocation" data-toggle="modal" data-target="#myModal">Create a new access type</button>
+
+
+
+
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Access Types List</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              
+               
+                <table class="table table-bordered">
+                    <thead>                  
+                      <tr>
+                        <th>Type</th>
+                        <!-- <th>Actions</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <td><input ng-model="searchtxt.access_type" type="text" class="form-control" placeholder="Filter"></td>
+                      <tr ng-repeat="at in accesstypes | filter: searchtxt | orderBy: 'access_type'">
+                        <td>{{at.access_type}}
+                          <span ng-if="myAccessType.can_edit_acces_types" class="badge bg-primary pull-right" style="margin-left: 10px;" ng-click="setActiveAccessType(at)" data-toggle="modal" data-target="#editModal">edit</span>
+                          <span ng-if="myAccessType.can_edit_acces_types" class="badge bg-warning pull-right" ng-confirm-click="removeData(at.url)" ng-confirm-message="You are about to remove the access type.">remove</span>
+                        </td>
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+    
+    
+            <!-- <div class="card-footer">
+              <button type="submit" class="btn btn-primary">Add Access Type</button>
+            </div> -->
+
+        </div>
+        
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+    <div class="card card-secondary">
+        <div class="card-header">
+          <h3 class="card-title">Create Access Type</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          
+            <div class="form-group">
+                <label for="name">Access Type Name</label>
+                <input ng-model="name" type="text" class="form-control" id="name" placeholder="Enter access type name">
+            </div>
+          
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="0" ng-model="can_access_website">
+                <label class="custom-control-label" for="0">Can access website</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="122" ng-model="can_view_dashboard">
+                <label class="custom-control-label" for="122">Can view dashboard</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="1" ng-model="can_view_users">
+                <label class="custom-control-label" for="1">View user information</label>
+              </div>
+            </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="2" ng-model="can_edit_users">
+                  <label class="custom-control-label" for="2">Create and edit users</label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="31" ng-model="can_view_agents">
+                <label class="custom-control-label" for="31">View agent information</label>
+              </div>
+            </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="32" ng-model="can_edit_agents">
+                  <label class="custom-control-label" for="32">Create and edit agents</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="3" ng-model="can_view_locations">
+                  <label class="custom-control-label" for="3">View locations information</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="4" ng-model="can_edit_locations">
+                  <label class="custom-control-label" for="4">Create and edit locations</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="5" ng-model="can_view_connections">
+                  <label class="custom-control-label" for="5">View connections / residents</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="6" ng-model="can_edit_connections">
+                  <label class="custom-control-label" for="6">Edit connections / residents</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="7" ng-model="can_view_acces_types">
+                  <label class="custom-control-label" for="7">View access type</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="8" ng-model="can_edit_acces_types">
+                  <label class="custom-control-label" for="8">Create and edit access types</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="9" ng-model="can_view_visitor_types">
+                  <label class="custom-control-label" for="9">View visitor types</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="10" ng-model="can_edit_visitor_types">
+                  <label class="custom-control-label" for="10">Create and edit visitor types</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="11" ng-model="can_view_access_passes">
+                  <label class="custom-control-label" for="11">View access passes</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="12" ng-model="can_edit_access_passes">
+                  <label class="custom-control-label" for="12">Create and edit access passes</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="13" ng-model="can_monitor">
+                  <label class="custom-control-label" for="13">Access monitor area</label>
+                </div>
+              </div>
+
+          </div>
+
+
+        <div class="card-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a class="btn btn-primary" style="color: #fff;" ng-click="addAccessType()">Add Access Type</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="editModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+    <div class="card card-secondary">
+        <div class="card-header">
+          <h3 class="card-title">Edit Access Type</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          
+            <div class="form-group">
+                <label for="name">Access Type Name</label>
+                <input ng-model="activeAccessTypeForEdit.access_type" type="text" class="form-control" id="name" placeholder="Enter access type name">
+            </div>
+          
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="ed0" ng-model="activeAccessTypeForEdit.can_access_website">
+                <label class="custom-control-label" for="ed0">Can access website</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="ed21" ng-model="activeAccessTypeForEdit.can_view_dashboard">
+                <label class="custom-control-label" for="ed21">Can view dashboard</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="ed1" ng-model="activeAccessTypeForEdit.can_view_users">
+                <label class="custom-control-label" for="ed1">View user information</label>
+              </div>
+            </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed2" ng-model="activeAccessTypeForEdit.can_edit_users">
+                  <label class="custom-control-label" for="ed2">Create and edit users</label>
+                </div>
+              </div>
+              
+               <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="ed31" ng-model="activeAccessTypeForEdit.can_view_agents">
+                <label class="custom-control-label" for="ed31">View agent information</label>
+              </div>
+            </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed32" ng-model="activeAccessTypeForEdit.can_edit_agents">
+                  <label class="custom-control-label" for="ed32">Create and edit agents</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed3" ng-model="activeAccessTypeForEdit.can_view_locations">
+                  <label class="custom-control-label" for="ed3">View locations information</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed4" ng-model="activeAccessTypeForEdit.can_edit_locations">
+                  <label class="custom-control-label" for="ed4">Create and edit locations</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed5" ng-model="activeAccessTypeForEdit.can_view_connections">
+                  <label class="custom-control-label" for="ed5">View connection information</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed6" ng-model="activeAccessTypeForEdit.can_edit_connections">
+                  <label class="custom-control-label" for="ed6">Create and edit connections</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed7" ng-model="activeAccessTypeForEdit.can_view_acces_types">
+                  <label class="custom-control-label" for="ed7">View access type</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed8" ng-model="activeAccessTypeForEdit.can_edit_acces_types">
+                  <label class="custom-control-label" for="ed8">Edit access type</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed9" ng-model="activeAccessTypeForEdit.can_view_visitor_types">
+                  <label class="custom-control-label" for="ed9">View visitor types</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed10" ng-model="activeAccessTypeForEdit.can_edit_visitor_types">
+                  <label class="custom-control-label" for="ed10">Create and edit visitor types</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed11" ng-model="activeAccessTypeForEdit.can_view_access_passes">
+                  <label class="custom-control-label" for="ed11">View access passes</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed12" ng-model="activeAccessTypeForEdit.can_edit_access_passes">
+                  <label class="custom-control-label" for="ed12">Create and edit access passes</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="ed13" ng-model="activeAccessTypeForEdit.can_monitor">
+                  <label class="custom-control-label" for="ed13">Access monitor area</label>
+                </div>
+              </div>
+
+          </div>
+
+
+        <div class="card-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a class="btn btn-primary" style="color: #fff;" ng-click="saveAccessType()">Save</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>

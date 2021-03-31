@@ -1,0 +1,139 @@
+<div class="row">
+
+  <!-- Trigger the modal with a button -->
+  <button ng-if="myAccessType.can_edit_visitor_types" type="button" class="btn btn-primary btn-md btnAddLocation"
+    data-toggle="modal" data-target="#myModal">Add a new visitor type</button>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Create Visitor Type</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+
+
+              <div class="form-group">
+                <label for="name">Visitor Type Name</label>
+                <input ng-model="name" type="text" class="form-control" id="name" placeholder="Enter visitor type name">
+                <br />
+                <div class="form-check">
+                  <input ng-model="isPermanent" type="checkbox" class="form-check-input" id="isPermanent">
+                  <label class="form-check-label" for="isPermanent">Should have permanent access pass</label>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary" ng-click="addVisitorType()">Add Visitor Type</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-12">
+  <div class="card card-secondary">
+    <div class="card-header">
+      <h3 class="card-title">Visitor Types List</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <td><input ng-model="searchtxt.visitor_type" type="text" class="form-control" placeholder="Filter"></td>
+          <tr ng-repeat="vt in visitortypes | filter: searchtxt | orderBy: 'visitor_type'">
+            <td>{{vt.visitor_type}}
+
+              <a ng-if="myAccessType.can_edit_visitor_types" class="badge bg-success pull-right"
+                style="margin-left: 10px;" ng-click="setActiveVisitorType(vt)" data-toggle="modal"
+                data-target="#editModal">edit</a>
+              <a ng-if="myAccessType.can_edit_visitor_types" class="badge bg-warning pull-right"
+                ng-confirm-click="removeData(vt.url)"
+                ng-confirm-message="You are about to remove the user type.">remove</a>
+
+            </td>
+            <!-- <td><span class="badge bg-warning">edit</span>
+                                <span class="badge bg-warning">remove</span></td> -->
+          </tr>
+
+        </tbody>
+      </table>
+
+
+      <!-- <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Add Access Type</button>
+                </div> -->
+
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+<!-- Modal -->
+<div id="editModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Edit Visitor Type</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <div class="form-group">
+              <label for="name">Visitor Type Name</label>
+              <input ng-model="activeVisitorTypeForEdit.visitor_type" type="text" class="form-control" id="name"
+                placeholder="Enter visitor type name">
+              <br />
+              <div class="form-check">
+                <input ng-model="activeVisitorTypeForEdit.isPermanent" type="checkbox" class="form-check-input"
+                  id="isPermanent">
+                <label class="form-check-label" for="isPermanent">Should have permanent access pass</label>
+              </div>
+            </div>
+
+
+
+          </div>
+
+
+          <div class="card-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <a class="btn btn-primary" style="color: #fff;" ng-click="saveVisitorType()">Save</a>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

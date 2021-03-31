@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AccessOne | Register</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+  <script src="./angular-scripts.js"></script>
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  </head>
+  <body class="login-page" style="min-height: 512.391px;" ng-app="myApp" ng-controller="accessCtrl">
+  <div class="login-box">
+    <div class="login-logo">
+        <img src="./img/accessone-black-nobackgound.png" width="160">
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Register a new account</p>
+  
+        <!-- <form action="../../index3.html" method="post"> -->
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" ng-model="email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" ng-model="password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-lock"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Name" ng-model="name">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Phone" ng-model="phone">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Passport Number" ng-model="passport">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Vehicle Number" ng-model="vehicle">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Street Name" ng-model="street">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <!-- <span class="fas fa-envelope"></span> -->
+              </div>
+            </div>
+          </div>
+          <label>Account Type:</label>
+          <div class="input-group mb-3">
+              
+            <select class="custom-select" ng-model="type">
+                <option ng-value="aut.url" ng-repeat="aut in appusertypes">{{aut.app_user_type}}</option>
+              </select>
+            <!-- <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div> -->
+          </div>
+
+          <p class="text-danger" ng-repeat="(key, value) in errors">
+              {{key}} - {{value[0]}}
+          </p>
+          
+          <div class="row">
+            <div class="col-4">
+              <!-- <div class="icheck-primary">
+                <input type="checkbox" id="remember">
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div> -->
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block" ng-click="register(email, password, name, phone, passport, vehicle, street, type)">Register</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        <!-- </form> -->
+  
+        <!-- <div class="social-auth-links text-center mb-3">
+          <p>- OR -</p>
+          <a href="#" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+          </a>
+          <a href="#" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          </a>
+        </div> -->
+        <!-- /.social-auth-links -->
+  
+        <p class="mb-1">
+          <!-- <a href="forgot-password.html">I forgot my password</a> -->
+        </p>
+        <p class="mb-0" style="text-align: center; padding-top: 30px;">
+          <a href="index.html" class="text-center">Login to your account</a>
+        </p>
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+  <!-- /.login-box -->
+  
+
+  
+  
+  
+  </body></html>
